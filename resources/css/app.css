@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@100;200&family=Ysabeau+SC:wght@200;300&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+:root{
+    --main-font:'Ysabeau SC', sans-serif;
+    --secondary-font:'Saira Condensed', sans-serif;
+}
+
+body{
+  font-family: var(--secondary-font);
+}
+
+h1,h2,h3,#logo{
+    font-family: var(--main-font);
+}
+
