@@ -19,3 +19,11 @@ Route::get('/', function () {
     return Inertia::render('Home/Home');
 });
 
+Route::get('/shop',function(){
+    return Inertia::render('Shop/Shop');
+});
+
+// add id to route
+Route::get('/product',function(){
+    return Inertia::render('Product/Product');
+});
