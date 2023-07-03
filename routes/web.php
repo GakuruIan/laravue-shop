@@ -15,10 +15,12 @@ use Inertia\Inertia;
 |
 */
 
+// home page route
 Route::get('/', function () {
     return Inertia::render('Home/Home');
 });
 
+// shop page route
 Route::get('/shop',function(){
     return Inertia::render('Shop/Shop');
 });
@@ -26,4 +28,9 @@ Route::get('/shop',function(){
 // add id to route
 Route::get('/product',function(){
     return Inertia::render('Product/Product');
+});
+
+//Cart page route
+Route::get('/cart',function(){
+    return Inertia::render('Cart/Cart');
 });
