@@ -34,3 +34,8 @@ Route::get('/product',function(){
 Route::get('/cart',function(){
     return Inertia::render('Cart/Cart');
 });
+
+// Checkout page route
+Route::get('/checkout',function(){
+    return Inertia::render('CheckOut/CheckOut');
+});

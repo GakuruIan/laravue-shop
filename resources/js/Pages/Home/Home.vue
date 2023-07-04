@@ -1,6 +1,7 @@
 <template>
    <Navbar/>
    <Banner/>
+   <CartDrawer/>
    <Catergory/>
    <Row title="Trending now"/>
    <Ad/>
@@ -17,6 +18,7 @@ import Row from '../../CustomComponents/Row.vue';
 import Ad from '../../CustomComponents/Ad.vue';
 import Policy from '../../CustomComponents/Policy.vue';
 import FooterVue from '../../CustomComponents/Footer.vue';
+import CartDrawer from '../../CustomComponents/CartDrawer.vue';
 export default {
   components:{
     Navbar,
@@ -25,7 +27,8 @@ export default {
     Row,
     Ad,
     Policy,
-    FooterVue
+    FooterVue,
+    CartDrawer
   }
 }
 </script>

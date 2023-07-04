@@ -19,3 +19,7 @@ h1,h2,h3,#logo{
     font-family: var(--main-font);
 }
 
+.scrollbar::-webkit-scrollbar{
+ display: none;
+}
+
