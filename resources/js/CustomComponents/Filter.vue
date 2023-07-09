@@ -7,6 +7,7 @@
         </svg>
         <h6 class="text-base">Filter</h6>
       </div>
+      
       <Dropdown>
          <template #trigger>
             <div class="py-2 flex items-center gap-1 px-4 border border-[#222] hover:cursor-pointer group hover:bg-[#222]">

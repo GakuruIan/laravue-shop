@@ -1,9 +1,7 @@
 <template>
-  <Navbar/>
   <MiniBanner catergory="Products" :img="shopping1"/>
-  <Filter/>
+   <Filter/>
    <Products/>
-   <Footer/>
 </template>
 
 <script>
