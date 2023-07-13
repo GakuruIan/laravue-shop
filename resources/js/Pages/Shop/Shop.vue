@@ -1,4 +1,5 @@
 <template>
+  <Navbar/>
   <MiniBanner catergory="Products" :img="shopping1"/>
    <Filter/>
    <Products/>

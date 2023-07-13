@@ -1,4 +1,5 @@
 <template>
+  <Navbar/>
    <div class="max-w-6xl mx-auto px-2 md:px-4 py-2 mt-12 md:mt-20">
     <div class="flex items-center border-b justify-between py-4 mb-4 px-2 md:px-0">
         <h6 class="text-xl">Checkout</h6>
@@ -128,9 +129,11 @@
 
 <script>
 import Checkbox from '../../Components/Checkbox.vue'
+import Navbar from '@/Components/Navbar.vue'
 export default {
   components:{
-    Checkbox
+    Checkbox,
+    Navbar
   }
 }
 </script>

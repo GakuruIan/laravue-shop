@@ -1,6 +1,6 @@
 <template>
   <div class="py-4 bg-[#262626] ">
-     <div class="max-w-5xl mx-auto py-4">
+     <div class="max-w-5xl mx-auto py-4 px-2 md:px-0">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="">
                 <h1 class="text-xl mb-2 text-gray-100"> About Laravue</h1>

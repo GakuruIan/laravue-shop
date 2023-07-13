@@ -19,17 +19,17 @@
          </template>
 
          <template #content>
-            <div class="py-2 px-2 hover:cursor-pointer group hover:bg-[#222]">
-               <p class="text-sm hover:text-white"> Price</p>
+            <div class="py-2 px-2 hover:cursor-pointer group hover:bg-gray-100">
+               <p class="text-sm"> Price</p>
             </div>
-            <div class="py-2 px-2 hover:cursor-pointer group hover:bg-[#222]">
-               <p class="text-sm hover:text-white">Size</p>
+            <div class="py-2 px-2 hover:cursor-pointer group hover:bg-gray-100">
+               <p class="text-sm">Size</p>
             </div>
-            <div class="py-2 px-2 hover:cursor-pointer group hover:bg-[#222]">
-               <p class="text-sm hover:text-white">Trending</p>
+            <div class="py-2 px-2 hover:cursor-pointer group hover:bg-gray-100">
+               <p class="text-sm">Trending</p>
             </div>
-            <div class="py-2 px-2 hover:cursor-pointer group hover:bg-[#222]">
-               <p class="text-sm hover:text-white">New</p>
+            <div class="py-2 px-2 hover:cursor-pointer group hover:bg-gray-100">
+               <p class="text-sm">New</p>
             </div>
          </template>
       </Dropdown>

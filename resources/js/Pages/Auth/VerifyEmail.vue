@@ -2,8 +2,8 @@
 import { computed } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue'
+import Header from '@/Components/Header.vue';
 
 const props = defineProps({
     status: String,
@@ -21,10 +21,11 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 <template>
     <Head title="Email Verification" />
 
+       
+
     <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
+      
+        <Header subtitle="Email Verification"/>
 
         <div class="mb-4 text-sm text-gray-600">
             Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
@@ -35,15 +36,16 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
         </div>
 
         <form @submit.prevent="submit">
-            <div class="mt-4 flex items-center justify-between">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Resend Verification Email
-                </PrimaryButton>
 
+            <SecondaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Resend Verification Email
+            </SecondaryButton>
+
+            <div class="mt-4 flex items-center justify-between">
                 <div>
                     <Link
                         :href="route('profile.show')"
-                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        class="border border-gray-300 px-8 py-3  text-sm text-gray-600 hover:bg-indigo-600 hover:text-white rounded-sm focus:outline-none"
                     >
                         Edit Profile</Link>
 
@@ -51,7 +53,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                         :href="route('logout')"
                         method="post"
                         as="button"
-                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ml-2"
+                        class="border border-gray-300 px-8 py-3  text-sm text-gray-600 hover:bg-red-600 hover:text-white rounded-sm focus:outline-none  ml-2"
                     >
                         Log Out
                     </Link>

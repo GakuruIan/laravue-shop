@@ -27,6 +27,37 @@ Route::get('/shop',function(){
     return Inertia::render('Shop/Shop');
 });
 
+// login
+Route::get('/login',function(){
+    return Inertia::render('Auth/Login');
+});
+
+
+// Register
+Route::get('/register',function(){
+   return Inertia::render('Auth/Register');
+});
+
+// Reset Password
+Route::get('/reset-password',function(){
+   return Inertia::render('Auth/ResetPassword');
+});
+
+// Forgot password
+Route::get('/forgot-password',function(){
+    return Inertia::render('Auth/ForgotPassword');
+});
+
+// Verify email
+Route::get('/verify',function(){
+   return Inertia::render('Auth/VerifyEmail');
+});
+
+//Profile route
+Route::get('/profile/{id}',function(){
+    return Inertia::render('Profile/partials/Profile');
+});
+
 // add id to route
 Route::get('/product',function(){
     return Inertia::render('Product/Product');

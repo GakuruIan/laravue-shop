@@ -30,53 +30,56 @@ const submit = () => {
     <Head title="Reset Password" />
 
     <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
+        <h1 class="text-6xl text-gray-800 text-center mb-2 py-2 tracking-wide">Laravue</h1>
+
+        <h6 class="text-base text-gray-400 text-center tracking-wide">Password reset</h6>
 
         <form @submit.prevent="submit">
-            <div>
+            <div class="mt-6">
                 <InputLabel for="email" value="Email" />
                 <TextInput
                     id="email"
                     v-model="form.email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     autofocus
                     autocomplete="username"
+                    placeholder="Enter your email"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
+            <div class="mt-6">
                 <InputLabel for="password" value="Password" />
                 <TextInput
                     id="password"
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     autocomplete="new-password"
+                    placeholder="Create new password"
                 />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4">
+            <div class="mt-6">
                 <InputLabel for="password_confirmation" value="Confirm Password" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     autocomplete="new-password"
+                    placeholder="Confirm new password"
                 />
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <div class="mt-6">
+                <PrimaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Reset Password
                 </PrimaryButton>
             </div>
