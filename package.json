@@ -24,6 +24,7 @@
         "chart.js": "^4.3.0",
         "vue-chartjs": "^5.2.0",
         "vue-router": "^4.2.4",
+        "vuex": "^4.1.0",
         "ziggy-js": "^1.6.0"
     }
 }

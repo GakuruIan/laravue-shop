@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,36 +30,46 @@ Route::get('/shop',function(){
     return Inertia::render('Shop/Shop');
 });
 
-// login
-Route::get('/login',function(){
-    return Inertia::render('Auth/Login');
-});
+// login page
+Route::get('/login',[UserController::class,'LoginForm'])->name('login');
 
+//login function
+Route::post('/login',[UserController::class,'Login']);
 
-// Register
-Route::get('/register',function(){
-   return Inertia::render('Auth/Register');
-});
+//Logout a user
+Route::post('/logout',[UserController::class,'Logout']);
 
-// Reset Password
-Route::get('/reset-password',function(){
-   return Inertia::render('Auth/ResetPassword');
-});
+// Register form
+Route::get('/register',[UserController::class, 'RegisterForm']);
 
-// Forgot password
-Route::get('/forgot-password',function(){
-    return Inertia::render('Auth/ForgotPassword');
-});
+//Register function
+Route::post('/register',[UserController::class,'Register']);
+
+// Reset Password Page
+Route::get('/reset-password/{token}',[ResetController::class,'ResetForm'])->middleware('guest')->name('password.reset');
+
+//Reset password
+Route::post('/reset-password',[ResetController::class,'HandleReset']);
+
+// Forgot password page
+Route::get('/forgot-password',[ResetController::class,'ForgotPassword']);
+
+//Requesting Reset link 
+Route::post('/forgot-password',[ResetController::class,'HandleResetEmail'])->middleware('guest')->name('password.email');
 
 // Verify email
-Route::get('/verify',function(){
-   return Inertia::render('Auth/VerifyEmail');
-});
+Route::get('/email/verify',[EmailController::class,'show'])->middleware('auth');
+
+// handling email verification
+Route::get('/email/verify/{id}/{hash}',[EmailController::class,'HandleVerification'])->middleware(['auth', 'signed'])->name('verification.verify');
+
+// resend the verification link
+Route::post('/email/verification-notification',[EmailController::class,'ResendVerificationLink'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 //Profile route
 Route::get('/profile/{id}',function(){
     return Inertia::render('Profile/partials/Profile');
-});
+})->middleware(['auth', 'verified']);
 
 // add id to route
 Route::get('/product',function(){
@@ -73,10 +86,10 @@ Route::get('/checkout',function(){
     return Inertia::render('CheckOut/CheckOut');
 });
 
-// Admin panel
+// Admin panel and admin role middleware
 Route::get('/admin',function(){
     return Inertia::render('Admin/Admin');
-});
+})->middleware(['auth', 'verified']);
 
 //Admin Products
 Route::get('/admin/products',function(){

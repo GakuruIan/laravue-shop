@@ -67,13 +67,14 @@
                     </template>
                     <template #content>
                            <!-- profile if user is logged in-->
-                           <div class="flex items-center gap-2 py-2 px-2 hover:cursor-pointer group hover:bg-gray-100 group">
+
+                           <div v-if="currentUser" class="flex items-center gap-2 py-2 px-2 hover:cursor-pointer group hover:bg-gray-100 group">
                             
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:stroke-indigo-700">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
 
-                             <p class="text-sm">Profile</p>
+                             <DropdownLink as="a" href="/profile" class="text-sm">Profile</DropdownLink>
                          </div>
                          
                         <div class="flex items-center gap-2 py-2 px-2 hover:cursor-pointer group hover:bg-gray-100 group">
@@ -112,11 +113,15 @@
                         <!-- if a user is logged in -->
                         <div class="flex items-center gap-2 py-2 px-2 border-t hover:cursor-pointer group hover:bg-gray-100 group">
 
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:stroke-indigo-700">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                            </svg>
-
-                            <p class="text-sm">Log out</p>
+                            <form @submit.prevent="submit">
+                                <button type="submit" class="w-full bg-none outline-none px-4  flex items-center gap-2 justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:stroke-indigo-700">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                    </svg>
+                                     <p class="text-sm">Log out</p>
+                                </button>
+                            </form>
+                            
                         </div>
                     </template>
                 </Dropdown>
@@ -161,7 +166,6 @@
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:stroke-indigo-700">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-
                              <p class="text-sm">Profile</p>
                          </div>
 
@@ -201,11 +205,15 @@
                         <!-- if a user is logged in -->
                         <div class="flex items-center gap-2 py-2 px-2 border-t hover:cursor-pointer group hover:bg-gray-100 group">
 
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:stroke-indigo-700">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                            </svg>
+                            <form @submit.prevent="submit">
+                                <button type="submit" class="w-full bg-none outline-none px-4  flex items-center gap-2 justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:stroke-indigo-700">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                    </svg>
+                                     <p class="text-sm">Log out</p>
+                                </button>
+                            </form>
 
-                            <p class="text-sm">Log out</p>
                         </div>
                     </template>
                 </Dropdown>
@@ -217,13 +225,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Dropdown from './Dropdown.vue'
-export default {
-// function to close and open the menu
-components:{
-    Dropdown
-}
-}
+import { useForm } from '@inertiajs/vue3';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+import DropdownLink from '@/Components/DropdownLink.vue'
+
+const store = useStore();
+
+const form = useForm({
+});
+
+
+const submit = () => {
+    form.transform(data => ({
+    })).post('/logout', {});
+};
+
+// make vuex persist
 
 </script>

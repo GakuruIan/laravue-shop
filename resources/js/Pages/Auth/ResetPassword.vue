@@ -1,7 +1,6 @@
 <script setup>
 import { Head, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -20,7 +19,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('password.update'), {
+    form.post('/reset-password', {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
@@ -35,6 +34,14 @@ const submit = () => {
         <h6 class="text-base text-gray-400 text-center tracking-wide">Password reset</h6>
 
         <form @submit.prevent="submit">
+            <TextInput
+                    id="token"
+                    v-model="form.token"
+                    type="hidden"
+                    class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
+                    required
+                    autofocus
+                />
             <div class="mt-6">
                 <InputLabel for="email" value="Email" />
                 <TextInput

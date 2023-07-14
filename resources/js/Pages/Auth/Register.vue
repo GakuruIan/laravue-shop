@@ -4,20 +4,20 @@ import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import Header from '@/Components/Header.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Header from '@/Components/Header.vue';
 import TextInput from '@/Components/TextInput.vue';
 
 const form = useForm({
-    name: '',
+    firstname: '',
+    lastname:'',
     email: '',
     password: '',
     password_confirmation: '',
-    terms: false,
+    role:'user'
 });
 
 const submit = () => {
-    form.post(route('register'), {
+    form.post('/register', {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
@@ -31,30 +31,31 @@ const submit = () => {
         <Header subtitle="Register an account"/>
         
         <form @submit.prevent="submit">
+
             <div class="mt-4">
                 <InputLabel for="firstname" value="Firstname" />
                 <TextInput
                     id="firstname"
-                    v-model="form.name"
+                    v-model="form.firstname"
                     type="text"
                     class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     placeholder="John"
                 />
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError class="mt-2" :message="form.errors.firstname" />
             </div>
 
             <div class="mt-4">
                 <InputLabel for="lastname" value="Lastname" />
                 <TextInput
                     id="lastname"
-                    v-model="form.name"
+                    v-model="form.lastname"
                     type="text"
                     class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     placeholder="Doe"
                 />
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError class="mt-2" :message="form.errors.lastname" />
             </div>
 
             <div class="mt-6">
@@ -97,7 +98,7 @@ const submit = () => {
             </div>
 
             <div class="mt-6">
-                <SecondaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <SecondaryButton type="submit" class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Register
                 </SecondaryButton>
             </div>
