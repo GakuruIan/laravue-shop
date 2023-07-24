@@ -18,5 +18,10 @@
     <body class="font-sans antialiased">
         @inertia
         @routes
+        @cloudinaryJS
     </body>
+
+    <script>
+        window.sessionMessage = @json(session('message'));
+    </script>
 </html>

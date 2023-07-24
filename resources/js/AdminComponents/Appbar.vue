@@ -19,9 +19,11 @@
                       <a href="" class="">Dashboard</a>
                   </li>
                   <li class="mt-2 text-white md:text-gray-500 hover:text-gray-400 hover:cursor-pointer">
-                      <a href="">Products</a>
+                      <a href="/admin/products">Products</a>
                   </li>
-  
+                  <li class="mt-2 text-white md:text-gray-500 hover:text-gray-400 hover:cursor-pointer">
+                      <a href="/admin/catergory">Catergory</a>
+                  </li>
                   <li class="mt-2 text-white md:text-gray-500 hover:text-gray-400 hover:cursor-pointer">
                       <a href="">Orders</a>
                   </li>

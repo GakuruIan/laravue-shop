@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('catergory', function (Blueprint $table) {
-            $table->id();
-            $table->string('catergory_name');
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
-            // add string to store image path
+        Schema::table('catergory', function (Blueprint $table) {
+            $table->string('image');
+            $table->string('publicId');
         });
     }
 
@@ -29,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('catergory');
+        Schema::table('catergory', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -81,6 +81,7 @@
           create product
       </button>
     </div>
+    
     <Table header="All Products" :columnDefs="columnDefs" :rowData="rowData"/>
   </div>
 </div>

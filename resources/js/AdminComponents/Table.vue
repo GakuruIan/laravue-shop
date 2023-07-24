@@ -2,20 +2,20 @@
   <div class="h-full py-4 w-full">
     <h1 class="text-xl md:text-2xl text-gray-500 mb-3">{{ header }}</h1>
      
-    <ag-grid-vue
-    class="ag-theme-alpine w-full h-72"
-    :columnDefs="columnDefs"
-    :rowData="rowData"
-    @first-data-rendered="onFirstDataRendered"
-    >
-  </ag-grid-vue>
+    <Vue3EasyDataTable
+      buttons-pagination
+     :headers="columnDefs"
+     :items="rowData"
+    />
+
+
   </div>
 </template>
 
 <script>
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import { AgGridVue } from "ag-grid-vue3";
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+
+import 'vue3-easy-data-table/dist/style.css';
 
 export default {
     props:{
@@ -33,14 +33,8 @@ export default {
         }
     },
     components:{
-       AgGridVue
+      Vue3EasyDataTable
     },
-   methods:{
-    onFirstDataRendered(params) {
-      params.api.sizeColumnsToFit();
-    },
-   }
-   
 }
 </script>
 

@@ -5,8 +5,16 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import { createToaster } from '@meforma/vue-toaster';
+
 
 import store from './store';
+
+const toaster = createToaster({
+        position:"top-right",
+        duration:3365     
+})
+
 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -19,6 +27,7 @@ createInertiaApp({
             .use(store) 
             .use(plugin)
             .use(ZiggyVue)
+            .use(toaster)
             .mount(el);
     },
     progress: {

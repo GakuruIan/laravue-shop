@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ResetController;
+use App\Http\Controllers\CatergoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,18 @@ Route::get('/admin/products',function(){
     return Inertia::render('Admin/Products/Products');
 });
 
+
+// admin Catergories
+Route::get('/admin/catergory',[CatergoryController::class,'show']);
+
+// create a catergory
+Route::post('/create/catergory',[CatergoryController::class,'create']);
+
+// updating a category
+Route::put('/category/update/{id}',[CatergoryController::class,'update']);
+
+// deleting catergory
+Route::delete('/category/delete/{id}',[CatergoryController::class,'delete']);
 
 // Orders
 Route::get('/admin/orders',function(){
