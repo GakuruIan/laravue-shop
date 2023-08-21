@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ResetController;
+use App\Http\Controllers\productsController;
 use App\Http\Controllers\CatergoryController;
 
 /*
@@ -93,13 +94,20 @@ Route::get('/admin',function(){
 })->middleware(['auth', 'verified']);
 
 //Admin Products
-Route::get('/admin/products',function(){
-    return Inertia::render('Admin/Products/Products');
-});
+Route::get('/admin/products',[productsController::class,'index']);
+
+// create product
+Route::post('/create/product',[productsController::class,'create']);
+
+// Fetch single product
+Route::get('/products/{id}',[productsController::class,'FetchProduct']);
 
 
 // admin Catergories
 Route::get('/admin/catergory',[CatergoryController::class,'show']);
+
+// Fetching All catergories
+Route::get('/catergory/all',[CatergoryController::class,'FetchCatergories']);
 
 // create a catergory
 Route::post('/create/catergory',[CatergoryController::class,'create']);

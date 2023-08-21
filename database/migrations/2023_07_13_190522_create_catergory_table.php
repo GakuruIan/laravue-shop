@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('catergory_name');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
-            // add string to store image path
         });
     }
 

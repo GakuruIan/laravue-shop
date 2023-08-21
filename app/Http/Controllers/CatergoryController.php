@@ -21,6 +21,12 @@ class CatergoryController extends Controller
         return Inertia::render('Admin/Catergory/Catergory',['Catergories'=> $data]);
     }
 
+    // all Catergories
+    public function FetchCatergories(){
+        $data = DB::table('catergory')->select('id','catergory_name')->get()->toArray();
+        return response()->json($data);
+    }
+
     // create a new catergory
     public function create(Request $request)
 {
