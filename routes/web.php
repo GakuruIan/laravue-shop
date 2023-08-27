@@ -102,6 +102,12 @@ Route::post('/create/product',[productsController::class,'create']);
 // Fetch single product
 Route::get('/products/{id}',[productsController::class,'FetchProduct']);
 
+// Updating a product
+Route::put('/update/product/{id}',[productsController::class,'UpdateProduct']);
+
+//Deleting a product 
+Route::delete('/delete/product/{product}',[productsController::class,'DeleteProduct']);
+
 
 // admin Catergories
 Route::get('/admin/catergory',[CatergoryController::class,'show']);

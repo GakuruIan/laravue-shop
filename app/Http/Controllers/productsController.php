@@ -126,7 +126,7 @@ class productsController extends Controller
                 $product = [
                         'name'=>$validated['name'],
                         'price'=>$validated['price'],
-                        'color'=>$validated['color'],
+                        'colors'=>$validated['color'],
                         'size'=>$validated['size'],
                         'description'=>$validated['description'],
                         'stock'=>$validated['stock'],
@@ -152,4 +152,151 @@ class productsController extends Controller
             }
        }
     }
+
+   
+
+    public function uploadPhotos($Images,$path){
+        $failedUploads = [];
+
+        foreach ($Images as $key => $image) {
+
+            try{
+                set_time_limit(90);
+                $uploadedImage = Cloudinary::upload($image->getRealPath(), [
+                    'folder' => $path,
+                    'transformation' => [
+                        'width' => 700,
+                        'height' => 800,
+                        'quality' => 'auto',
+                        'fetch' => 'auto',
+                        'crop' => 'scale',
+                    ],
+                ]);
+
+                
+
+                $uploadedImages[$key] = [
+                    'image' => $uploadedImage->getSecurePath(),
+                    'publicId' => $uploadedImage->getPublicId()
+                ];
+
+            } catch (UploadApiException $e) {
+                $failedUploads[] = $image->getClientOriginalName();
+                throw ValidationException::withMessages(['message' => 'Error uploading Image.']);
+            }
+            catch (TimeoutException $e){
+                 throw ValidationException::withMessages(['message' => 'Execution took too long. Try again after a few minutes']);
+            }
+        }
+         
+       
+        return [$failedUploads,$uploadedImages];
+    }
+
+    public function delete($id){
+        $failedDeletions=[];
+
+        $Images = DB::table('productImages')
+        ->select('productImages.id','productImages.publicId')
+        ->where('product_id','=',$id)
+        ->get()
+        ->toArray();
+        
+        foreach($Images as $image){
+            try {
+                set_time_limit(90);
+
+                $response=Cloudinary::destroy($image->publicId);
+                
+                if($response->headers["Status"][0] === '200 OK'){
+                    productImages::where('publicId','=',$image->publicId)->delete();
+                }
+        
+             } catch (\Throwable $th) {
+                $failedDeletions[]= $image->getClientOriginalName();
+                return back()->with('message','Image Deletion failed');
+             }
+        }
+
+      return $failedDeletions;
+    }
+    
+
+    public function UpdateProduct(Request $request){
+
+        $failedUploads=[];
+        $UploadedImages=[];
+
+        $Product = products::findOrFail($request->id);
+
+       $validated = $request->validate([
+            'name'=>'string|required|min:5|max:30',
+            'price'=>'required|min:0',
+            'color'=>'string|required|max:30|min:3',
+            'size'=>'string',
+            'description'=>'required|string|min:5|max:60',
+            'stock'=>'required',
+            'images.*'=>'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'category_id'=>'nullable'
+          ]);
+
+         
+          if($request->hasFile('images')){
+            $Images = $request->file('images');
+
+             $failedDeletions = $this->delete($request->id);
+
+            if(empty($failedDeletions)){
+
+              [$failedUploads,$uploadedImages] = $this->uploadPhotos($Images,'laravue/Products');
+
+              $FailedUploads = $failedDeletions;
+              $UploadedImages = $uploadedImages;
+            }
+          }
+
+          if(empty($failedUploads)){
+            
+            $product = [
+                'name'=>$validated['name'],
+                'price'=>$validated['price'],
+                'colors'=>$validated['color'],
+                'size'=>$validated['size'],
+                'description'=>$validated['description'],
+                'stock'=>$validated['stock'],
+                'category_id'=>$validated['category_id']
+              ];
+
+            $results = $Product->update($product);
+              
+            if(!empty($UploadedImages)){
+
+                foreach($UploadedImages as $values){
+
+                    productImages::create([
+                        'image'=>$values['image'],
+                        'publicId'=>$values['publicId'],
+                        'product_id'=>$Product->id
+                    ]);
+                }
+
+            }
+             
+
+            return back()->with('message',"Product updated successfully");
+          }
+
+          return back()->with('message',"An error occurred could not update product");
+    }
+
+    public function DeleteProduct(products $product){
+        $failedDeletions = [];
+        
+        $failedDeletions = $this->delete($product->id);
+
+       if(empty($failedDeletions)){
+        $product->delete();
+       }
+    }
+
 }
