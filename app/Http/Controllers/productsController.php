@@ -19,7 +19,6 @@ class productsController extends Controller
 
         $products = DB::table('products')
             ->join('catergory','products.category_id','=','catergory.id')
-            
             ->select('products.*','catergory.catergory_name')
             ->get()->toArray();
 
@@ -71,11 +70,11 @@ class productsController extends Controller
     public function create(Request $request){
 
        $validated = $request->validate([
-         'name'=>'string|required|min:5|max:30',
+         'name'=>'string|required|min:3|max:30',
          'price'=>'required|min:0',
          'color'=>'string|nullable|max:30|min:3',
          'size'=>'string',
-         'description'=>'required|string|min:5|max:60',
+         'description'=>'required|string|min:5|max:255',
          'stock'=>'required',
          'images.*'=>'required|image|mimes:jpeg,png,jpg|max:5120',
          'category_id'=>'required'

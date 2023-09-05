@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ResetController;
@@ -28,9 +29,7 @@ Route::get('/', function () {
 });
 
 // shop page route
-Route::get('/shop',function(){
-    return Inertia::render('Shop/Shop');
-});
+Route::get('/shop',[ShopController::class,'Index']);
 
 // login page
 Route::get('/login',[UserController::class,'LoginForm'])->name('login');
@@ -73,10 +72,9 @@ Route::get('/profile/{id}',function(){
     return Inertia::render('Profile/partials/Profile');
 })->middleware(['auth', 'verified']);
 
-// add id to route
-Route::get('/product',function(){
-    return Inertia::render('Product/Product');
-});
+// Fetch a single product
+Route::get('/product/{id}',[ShopController::class,'FetchProduct']);
+
 
 //Cart page route
 Route::get('/cart',function(){

@@ -2,13 +2,13 @@
   <div class="max-w-5xl mx-auto px-2 md:px-0 ">
     <h6 class="text-lg mb-2">Products</h6>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4 py-4">
-         <div class="p-2" v-for="(image,index) in Images" :key="index">
-            <img :src="image" alt="" class="h-56 w-full object-cover">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 py-4">
+         <div class="p-2" v-for="product in Products" :key="product.id">
+            <img :src="product.images[0].image" alt="" class="h-56 w-full object-cover">
 
             <div class="flex items-center justify-between mt-2">
-                <h6 class="text-base text-gray-800 hover:text-gray-400 hover:cursor-pointer hover:underline">Product name</h6>
-                <p class="text-sm">KSH 1200</p>
+                <a :href="'/product/'+ product.id" class="text-base md:text-xl text-gray-800 hover:text-gray-400 hover:cursor-pointer hover:underline">{{ product.name }}</a>
+                <p class="text-sm">{{product.price}}</p>
             </div>
 
            
@@ -17,10 +17,7 @@
             <div class="flex items-center gap-3 my-3">
                 <p class="text-sm">Size :</p>
                 <div class="flex items-center gap-3">
-                    <span class="flex items-center justify-center py-1 px-2  border border-1 hover:bg-[#222] hover:border-white hover:text-white hover:cursor-pointer">sm</span>
-                    <span class="flex items-center justify-center py-1 px-2  border border-1 hover:bg-[#222] hover:border-white hover:text-white hover:cursor-pointer">md</span>
-                    <span class="flex items-center justify-center py-1 px-2  border border-1 hover:bg-[#222] hover:border-white hover:text-white hover:cursor-pointer">lg</span>
-                    <span class="flex items-center justify-center py-1 px-2  border border-1 hover:bg-[#222] hover:border-white hover:text-white hover:cursor-pointer">xl</span>
+                    <span v-for="size,index in split(product.size)" :key="index" class="flex items-center justify-center py-1 px-2  border border-1 hover:bg-[#222] hover:border-white hover:text-white hover:cursor-pointer">{{ size }}</span>
                 </div>
             </div>
 
@@ -28,18 +25,15 @@
 
             <div class="flex items-center gap-3 my-3">
                 <p class="text-sm">Color :</p>
-                <div class="flex items-center gap-3">
-                    <span class="flex items-center justify-center p-2 rounded-full bg-indigo-300 hover:cursor-pointer"></span>
-                    <span class="flex items-center justify-center p-2 rounded-full bg-gray-900 hover:cursor-pointer"></span>
-                    <span class="flex items-center justify-center p-2 rounded-full bg-[#ff0] hover:cursor-pointer"></span>
-                    <span class="flex items-center justify-center p-2 rounded-full bg-cyan-700 hover:cursor-pointer"></span>
+                <div class="flex items-center gap-3" >
+                    <span v-for="color,index in split(product.color)" :key="index" class="flex items-center justify-center p-2 rounded-full hover:cursor-pointer" :style="backgroundColor(color)" ></span>
                 </div>
             </div>
 
             <!-- stock -->
             <div class="flex items-center gap-3 my-3">
                 <p class="text-sm">In Stock:</p>
-                 <p class="text-sm text-gray-400">7 remaining</p>
+                 <p class="text-sm text-gray-400">{{ product.stock }} remaining</p>
             </div>
 
             <!-- buttons -->
@@ -89,25 +83,34 @@
     </div>
 </template>
 
-<script>
-import jacket from '../assets/jacket.jpg';
-import jacket2 from '../assets/jacket2.jpg';
-import tshirt from '../assets/tshirt.jpg';
-import tshirt2 from '../assets/tshirt2.jpg';
-export default {
-  data(){
-     return{
-        Images:[
-            jacket,
-            jacket2,
-            tshirt,
-            tshirt2,
-            tshirt,
-            tshirt2
-        ]
-     }
-  }
+<script setup>
+import{ref} from 'vue'
+
+import { defineProps } from 'vue';
+
+let Products = ref([])
+
+
+const  {products}  = defineProps(['products']);
+
+for(let product in products){
+  Products.value.push({
+    id:product,
+    ...products[product]
+  })
 }
+
+// creating an array for size and color
+const split=(list)=>{
+  let array_list = list.split(',');
+  return array_list;
+}
+
+// dynamic creation of color backgound
+const backgroundColor=(color)=>{
+  return {'background-color':color}
+}
+
 </script>
 
 <style>
