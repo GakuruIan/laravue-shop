@@ -1,5 +1,72 @@
 <template>
   <Navbar/>
+  <!-- Dialog modal-->
+  <DialogModal :show="openModal"  :closeable="true">
+      <template #title>
+        <h2>Order details</h2>
+      </template>
+      <template #content>
+
+        <table class="w-full text-sm text-left text-gray-500 ">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Product
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Color
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Size
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                           Quantity
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Price
+                        </th >
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="order,index in orderInfo.order_details" :key="index" class="bg-white border-b odd:bg-white even:bg-slate-50">
+                       <td class="px-6 py-4 font-medium text-gray-900">
+                               <h4 class="text-base"> {{ orderInfo.name }} </h4> 
+                       </td>
+                        <td  class="px-6 py-4"> 
+                             <span :style="{backgroundColor:order.color}" class="flex items-center justify-center p-2 rounded-full w-4 h-4 hover:cursor-pointer"></span> 
+                        </td>
+
+                        <td class="px-6 py-4">
+                                <span class="text-sm border border-gray-300 rounded-sm p-2 text-center">{{ order.size }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-base text-gray-500">{{ order.quantity }}</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ orderInfo.price }} 
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                <button @click="RemoveSpecificOrder(orderInfo.id,index)" class="px-4 py-2 border border-gray-300 text-center group hover:cursor-pointer text-sm text-gray-500 hover:text-gray-400">
+                                        Remove 
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+        </table>
+      </template>
+
+      <template #footer>
+            <div class="flex justify-end">
+                <button @click="CloseModal()" class="px-4 py-2 text-base text-white bg-red-600 hover:bg-red-500 rounded-sm">Close</button>
+            </div>
+        </template>
+  </DialogModal>
 
   <!-- cart view -->
   <div class="max-w-5xl mx-auto py-2 mt-12 md:mt-20">
@@ -69,9 +136,18 @@
                             {{ product.price }} 
                         </td>
                         <td class="px-6 py-4">
-                            <button @click="RemoveProductInCart(product.id)" class="px-4 py-2 border border-gray-300 text-center group hover:cursor-pointer text-sm text-gray-500 hover:text-gray-400">
-                                    Remove 
-                            </button>
+                            <div class="flex gap-2">
+                                <button @click="toggleModal(product.id)" class="px-4 py-2 bg-indigo-600 text-center group hover:cursor-pointer text-sm text-gray-500 hover:text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 stroke-white">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </button>
+
+                                <button @click="RemoveProductInCart(product.id)" class="px-4 py-2 border border-gray-300 text-center group hover:cursor-pointer text-sm text-gray-500 hover:text-gray-400">
+                                        Remove 
+                                </button>
+                            </div>
                         </td>
                     </tr>
                  
@@ -83,14 +159,17 @@
                 <h1 class="text-xl md:text-2xl text-gray-400">Cart is Empty</h1>
             </div>
 
-            <div v-if="Cart.length > 0" class="flex gap-2 justify-end mt-4">
-                  <button  @click="ClearCart()" class="bg-red-600  hover:text-white text-white hover:bg-red-400 px-4 py-2  text-base ">
-                      Clear Cart
-                  </button>
+            <div v-if="Cart.length > 0" class="flex flex-col  gap-4 items-end mt-4">
+                    <h6 class="text-base text-gray-400">Total Price Ksh: {{ total }}</h6>
+                    <div class="flex gap-2">
+                        <button  @click="ClearCart()" class="bg-red-600  hover:text-white text-white hover:bg-red-400 px-4 py-2  text-base ">
+                            Clear Cart
+                        </button>
 
-                  <button class="bg-green-600  hover:text-white text-white hover:bg-green-400 px-4 py-2  text-base">
-                       Check out
-                    </button>
+                        <button class="bg-green-600  hover:text-white text-white hover:bg-green-400 px-4 py-2  text-base">
+                            Check out
+                        </button>
+                   </div>
              </div>
         </div>
         
@@ -118,7 +197,6 @@
                                   <h6 class="text-base ">Color: </h6>
                                       <div class="flex items-center gap-1">
                                           <span v-for="order,index in product.order_details" :key="index" :style="backgroundColor(order.color)" class="flex items-center justify-center p-2 rounded-full hover:cursor-pointer"></span>
-                                        
                                       </div>
                               </div>
 
@@ -175,28 +253,36 @@
 <script setup>
 import empty from '@/assets/empty-box.png';
 import Navbar from '@/Components/Navbar.vue';
-import {backgroundColor,RemoveProduct} from '@/utils'
+import {backgroundColor,RemoveProduct,RemoveOrderDetails} from '@/utils'
 import { ref } from 'vue';
 import  { createToaster } from "@meforma/vue-toaster";
+import DialogModal from '@/Components/DialogModal.vue'
 
 const toaster = createToaster({ 
 position:"top-right",
 duration:4000,
  });
 
-
 let Cart = ref([])
+let total = ref(0)
+let orderInfo = ref({})
+let openModal = ref(false)
 
 let cartItems = localStorage.getItem('cart')
 
-let productsInCart = JSON.parse(cartItems)
+let productsInCart = cartItems ? JSON.parse(cartItems) : {orders:{},total_price:0,total_products:0}
 
-for(let item in productsInCart){
+let {orders,total_price} = productsInCart
+
+// adding orders to Cart array
+for(let item in orders){
     Cart.value.push({
       id:item,
-      ...productsInCart[item]
+      ...orders[item]
     })
 }
+
+total.value =total_price
 
 // clearing cart
 const ClearCart=()=>{
@@ -214,6 +300,28 @@ const RemoveProductInCart=(id)=>{
    toaster.error("Sorry could not remove product, Try Again")
   }
 }
+
+// Removing a products order details
+const RemoveSpecificOrder=(productId,index)=>{
+    RemoveOrderDetails(productId,index)
+}
+
+
+// open modal for order details
+const toggleModal = (id)=>{
+  openModal.value = !openModal.value
+
+  if(openModal.value){
+    orderInfo.value = orders[id]
+    orderInfo.value['id'] = id
+  }
+}
+
+// close modal
+const CloseModal=()=>{
+    openModal.value = false
+}
+
 
 </script>
 

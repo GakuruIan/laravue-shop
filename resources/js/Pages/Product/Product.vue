@@ -133,19 +133,22 @@ const AddCart=()=>{
    const {id,price,images,name} = Product.value
    
    const Order = {
-     [id]:{
-     name,
-     image:images[0].image,
-     price,
-     order_details:[
-       {
-         quantity:quantity.value,
-         size:sizeElement.value,
-         color:colorElement.value,
-       }
-     ],
-     total_quantity:quantity.value
-     }
+      orders:{
+        [id]:{
+        name,
+        image:images[0].image,
+        price,
+        order_details:[
+          {
+            quantity:quantity.value,
+            size:sizeElement.value,
+            color:colorElement.value,
+          }
+        ],
+        total_quantity:quantity.value,
+      }
+     },
+     total_price:price * quantity.value
    }
 
    AddToCart(Order,id)

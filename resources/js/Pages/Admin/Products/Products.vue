@@ -374,7 +374,7 @@
 import Loader from '@/AdminComponents/Loader.vue';
 import InputError from '@/Components/InputError.vue';
 import TextInput from '@/Components/TextInput.vue';
-import Modal from '../../../Components/Modal.vue'
+import Modal from '@/Components/Modal.vue'
 import ConfirmationModal from '@/Components/ConfirmationModal.vue'
 
 import { ref } from 'vue';

@@ -102,22 +102,22 @@
 
         <div class="flex items-center justify-between py-2">
           <h6 class="text-sm">Products</h6>
-          <p class="text-sm text-gray-400">(5)</p>
+          <p class="text-sm text-gray-400">({{ products }})</p>
         </div>
 
         <div class="flex items-center justify-between py-2">
           <h6 class="text-sm">Price</h6>
-          <p class="text-sm text-gray-400">Ksh 14,000</p>
+          <p class="text-sm text-gray-400">Ksh {{ amount }}</p>
         </div>
 
         <div class="flex items-center justify-between py-2">
           <h6 class="text-sm">Delievery Fee</h6>
-          <p class="text-sm text-gray-400">Ksh 400</p>
+          <p class="text-sm text-gray-400">Ksh ({{ delievery_fee }})</p>
         </div>
 
         <div class="flex items-center justify-between py-2 border-t">
           <h6 class="text-sm">Total</h6>
-          <p class="text-sm text-gray-400">Ksh 14,400</p>
+          <p class="text-sm text-gray-400">Ksh {{ total }}</p>
         </div>
 
       </div>
@@ -127,15 +127,25 @@
    </div>
 </template>
 
-<script>
-import Checkbox from '../../Components/Checkbox.vue'
+<script setup>
+import Checkbox from '@/Components/Checkbox.vue'
 import Navbar from '@/Components/Navbar.vue'
-export default {
-  components:{
-    Checkbox,
-    Navbar
-  }
-}
+import { ref } from 'vue'
+
+let amount=ref(0)
+let products =ref(0)
+let delievery_fee =ref(500)
+let total =ref(0)
+
+
+let Cart = JSON.parse(localStorage.getItem('cart'))
+
+const {total_price,total_products}=Cart
+
+amount.value=total_price
+products.value = total_products
+total.value= delievery_fee.value + amount.value
+
 </script>
 
 <style>
