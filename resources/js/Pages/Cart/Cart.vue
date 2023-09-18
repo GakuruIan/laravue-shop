@@ -72,7 +72,7 @@
   <div class="max-w-5xl mx-auto py-2 mt-12 md:mt-20">
       <div class="flex items-center border-b justify-between py-4 mb-4 px-2 md:px-0">
         <h6 class="text-xl">Cart</h6>
-        <h6 class="text-sm text-gray-700 hover:text-gray-400 hover:cursor-pointer hover:underline">Continue Shopping</h6>
+        <a href="/shop" class="text-sm text-gray-700 hover:text-gray-400 hover:cursor-pointer hover:underline">Continue Shopping</a>
       </div>
 
       <!-- cart list -->
@@ -166,9 +166,9 @@
                             Clear Cart
                         </button>
 
-                        <button class="bg-green-600  hover:text-white text-white hover:bg-green-400 px-4 py-2  text-base">
+                        <a href="/checkout" class="bg-green-600  hover:text-white text-white hover:bg-green-400 px-4 py-2  text-base">
                             Check out
-                        </button>
+                        </a>
                    </div>
              </div>
         </div>
@@ -234,9 +234,9 @@
                             Clear Cart
                         </button>
 
-                        <button class="bg-green-600  hover:text-white text-white hover:bg-green-400 px-4 py-2  text-base">
+                        <a href="/checkout" class="bg-green-600  hover:text-white text-white hover:bg-green-400 px-4 py-2  text-base">
                             Check out
-                        </button>
+                        </a>
                 </div>
             </div>
             <!-- empty Cart -->

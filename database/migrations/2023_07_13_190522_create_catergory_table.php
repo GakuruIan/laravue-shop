@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('catergory', function (Blueprint $table) {
             $table->id();
             $table->string('catergory_name');
+            $table->string('image');
+            $table->string('publicId');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
         });

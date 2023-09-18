@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->date('order_date');
-            $table->string('status');
-            $table->integer('amount');
+            $table->string('status')->default('pending');
+            $table->decimal('amount', 10, 2);
+            $table->string('tracking_id')->unique();
+            $table->timestamps();
         });
     }
 

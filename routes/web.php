@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\productsController;
 use App\Http\Controllers\CatergoryController;
@@ -122,10 +123,14 @@ Route::put('/category/update/{id}',[CatergoryController::class,'update']);
 // deleting catergory
 Route::delete('/category/delete/{id}',[CatergoryController::class,'delete']);
 
+
 // Orders
 Route::get('/admin/orders',function(){
     return Inertia::render('Admin/Orders/Orders');
 });
+
+// create order
+Route::post('/create/order',[OrderController::class,'create']);
 
 // Delieveries
 Route::get('/admin/delieveries',function(){

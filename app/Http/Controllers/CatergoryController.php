@@ -40,6 +40,7 @@ class CatergoryController extends Controller
     if ($request->hasFile('image')) {
 
         try {
+            set_time_limit(90);
             $imagePath = $request->file('image')->getRealPath();
 
             $uploadedImage = Cloudinary::upload($imagePath, [

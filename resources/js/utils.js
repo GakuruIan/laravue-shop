@@ -92,4 +92,4 @@ export const RemoveOrderDetails=(productID,index)=>{
    }
 
    localStorage.setItem('cart',JSON.stringify(Cart))
-}
+} 
