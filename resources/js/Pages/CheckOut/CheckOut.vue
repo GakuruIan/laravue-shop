@@ -142,9 +142,13 @@ const form = useForm({
 
 
 for(let cart in orders){
-    const {image,name,price,...orderInfo} =orders[cart]
+    const {image,name,price,total_quantity,...orderInfo} =orders[cart]
     Orders.value.push({
+      name,
       productID:cart,
+      total_quantity,
+      image:image,
+      total_amount: price * total_quantity,
       ...orderInfo
     })
 

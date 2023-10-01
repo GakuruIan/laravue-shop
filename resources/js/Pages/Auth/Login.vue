@@ -8,7 +8,7 @@ import Header from '../../Components/Header.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue'
 import TextInput from '@/Components/TextInput.vue';
 
-import { computed } from 'vue';
+
 
 import { useStore } from 'vuex';
 
@@ -18,6 +18,7 @@ defineProps({
     canResetPassword: Boolean,
     status: String
 });
+
 
 const form = useForm({
     email: '',
@@ -36,7 +37,6 @@ const submit = () => {
         onSuccess:async(response)=>{
             const user = response.props.auth.user;
             await store.dispatch('setUser',user);
-
             window.location.href = '/';
         },
         

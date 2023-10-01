@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,32 @@ class UserController extends Controller
     //login form
     public function LoginForm(){
         return Inertia::render('Auth/Login');
+    }
+
+    // show profile form
+    public function ShowProfile(){
+        return Inertia::render('Profile/partials/Profile');
+    }
+
+    // create profile function
+    public function CreateProfile(Request $request){
+
+        $validatedData = $request->validate([
+            'phone_number' => 'required',
+            'county' => 'required|min:5|max:20',
+            'sub_county' => 'required|min:5|max:20',
+            'ward' => 'required|min:5|max:20',
+        ]);
+
+        if(Auth::check()){
+            $validatedData['user_id'] = Auth::user()->id;
+            
+            Profile::create($validatedData);
+            
+            return redirect('/')->with('message','Profile successfully created');
+        }
+
+        return redirect()->back()->with('message',"You have to be Authenticated");
     }
     
     //register function
@@ -38,8 +65,9 @@ class UserController extends Controller
 
         event(new Registered($user));
 
-        return redirect('/');
+        return redirect()->back()->with('user',$user);
     }
+
 
     //login function
     public function Login(Request $request){

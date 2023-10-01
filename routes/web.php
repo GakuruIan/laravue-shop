@@ -47,6 +47,12 @@ Route::get('/register',[UserController::class, 'RegisterForm']);
 //Register function
 Route::post('/register',[UserController::class,'Register']);
 
+//Profile route
+Route::get('/profile',[UserController::class,'ShowProfile'])->middleware(['auth', 'verified']);
+
+// Create  profile route
+Route::post('/create/profile',[UserController::class,'CreateProfile']);
+
 // Reset Password Page
 Route::get('/reset-password/{token}',[ResetController::class,'ResetForm'])->middleware('guest')->name('password.reset');
 
@@ -60,18 +66,13 @@ Route::get('/forgot-password',[ResetController::class,'ForgotPassword']);
 Route::post('/forgot-password',[ResetController::class,'HandleResetEmail'])->middleware('guest')->name('password.email');
 
 // Verify email
-Route::get('/email/verify',[EmailController::class,'show'])->middleware('auth');
+Route::get('/email/verify',[EmailController::class,'show'])->middleware('auth')->name('verification.notice');
 
 // handling email verification
 Route::get('/email/verify/{id}/{hash}',[EmailController::class,'HandleVerification'])->middleware(['auth', 'signed'])->name('verification.verify');
 
 // resend the verification link
 Route::post('/email/verification-notification',[EmailController::class,'ResendVerificationLink'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-//Profile route
-Route::get('/profile/{id}',function(){
-    return Inertia::render('Profile/partials/Profile');
-})->middleware(['auth', 'verified']);
 
 // Fetch a single product
 Route::get('/product/{id}',[ShopController::class,'FetchProduct']);
@@ -132,6 +133,9 @@ Route::get('/admin/orders',function(){
 // create order
 Route::post('/create/order',[OrderController::class,'create']);
 
+// users order
+Route::get('/myorders',[OrderController::class,'FetchUserOrders']);
+
 // Delieveries
 Route::get('/admin/delieveries',function(){
     return Inertia::render('Admin/Delieveries/Delieveries');
@@ -141,3 +145,13 @@ Route::get('/admin/delieveries',function(){
 Route::get('/admin/payments',function(){
     return Inertia::render('Admin/Payments/Payments');
 });
+
+// successful payments
+Route::get('/payment/success',function(){
+    return Inertia::render('Success/success');
+})->name('success');
+
+// failed  payments
+Route::get('/payment/failure',function(){
+    return Inertia::render('Failure/Failure');
+})->name('cancel');

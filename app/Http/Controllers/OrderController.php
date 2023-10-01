@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Stripe\Stripe;
+use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\OrderItems;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Stripe\Checkout\Session;
 use App\Models\DeliveryDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
+//    creating an order
     public function create(Request $request){
 
         $validatedData = $request->validate([
@@ -24,6 +28,8 @@ class OrderController extends Controller
             'ward' => 'required|min:5|max:20',
             'amount' => 'required|numeric',
         ]);
+
+
     
         // creating delivery details 
         $deliveryDetails = [
@@ -65,21 +71,84 @@ class OrderController extends Controller
 
              OrderItems::insert($orderItems);
 
-            DB::commit();
+             $stripe_session = $this->Stripe_session($orders);
 
-            return back()->with('message', 'Order placed successfully');
+             //DB::commit();
 
+             return redirect()->away($stripe_session->url);
         } 
         catch (\Throwable $th) {
-
-            echo '<pre>';
-            echo  $th->getMessage();
-            echo '</pre>';
-
-            exit();
             DB::rollBack();
             return back()->with('message', 'An error occurred. Try again later.');
         }
+    }
+
+    // create a stripe session
+    public function Stripe_session($Orders){
+
+        Stripe::setApiKey(config('stripe.ak'));
+
+        $line_items = [];
+
+        foreach($Orders as $order){
+            
+            $line_item = [
+                'price_data' => [
+                    'currency' => 'kes',
+                    'product_data' => [
+                        'name' => $order['name'],
+                        'images' => [$order['image']],
+                        'metadata' => [
+                            'order_details' => json_encode($order['order_details']),
+                        ],
+                    ],
+                    'unit_amount' => $order['total_amount'] * 100, 
+                ],
+                'quantity' => $order['total_quantity'],
+            ];
+
+            $line_items[] = $line_item;
+        }
+        
+
+
+        try {
+
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                 'line_items' => $line_items,
+                 'mode' => 'payment',
+                 'success_url' => route('success'),
+                 'cancel_url' =>route('cancel')
+            ]);
+
+        } catch (\Throwable $th) {
+           echo $th->getMessage();
+           exit();
+        }
+        catch (ApiErrorException $e) {
+            echo json_encode(['error' => $e->getMessage()]);
+            exit();
+        }
+
+       
+
+        return $session;
+    }
+
+
+    // fetching a users order
+    public function FetchUserOrders(){
+
+        // if(Auth::check()){
+        //     // add a nullable user_id in orders for tracking
+
+        //     return  Inertia::render('Orders/Order');
+        // }
+
+        // return redirect('/login');
+
+        return Inertia::render('Orders/Order');
     }
     
 }

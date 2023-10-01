@@ -23,6 +23,7 @@
         "chart.js": "^4.3.0",
         "epic-spinners": "^2.0.0",
         "vue-chartjs": "^5.2.0",
+        "vue-confetti": "^2.3.0",
         "vue-router": "^4.2.4",
         "vue3-easy-data-table": "^1.5.47",
         "vuex": "^4.1.0",

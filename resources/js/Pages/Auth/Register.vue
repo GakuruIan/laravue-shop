@@ -6,6 +6,18 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Header from '@/Components/Header.vue';
 import TextInput from '@/Components/TextInput.vue';
+import  { createToaster } from "@meforma/vue-toaster";
+
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+
+const toaster = createToaster({ 
+position:"top-right",
+duration:4000,
+ })
 
 const form = useForm({
     firstname: '',
@@ -19,6 +31,19 @@ const form = useForm({
 const submit = () => {
     form.post('/register', {
         onFinish: () => form.reset('password', 'password_confirmation'),
+        onSuccess:async(response)=>{
+            const user = response.props.auth.user;
+            await store.dispatch('setUser',user)
+            const id = store.state.user.id
+
+            window.location = `/profile`
+        },
+        onError:(error)=>{     
+        const values = Object.values(error)
+            values.forEach(value=>{
+            toaster.error(value)
+            })
+        }
     });
 };
 </script>

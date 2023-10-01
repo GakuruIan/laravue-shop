@@ -10,10 +10,11 @@
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.8",
         "itsgoingd/clockwork": "^5.1",
-        "laravel/framework": "^9.19",
+        "laravel/framework": "^9.20",
         "laravel/jetstream": "^3.0",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "stripe/stripe-php": "^12.3",
         "tightenco/ziggy": "^1.6",
         "vinkla/hashids": "^10.0"
     },

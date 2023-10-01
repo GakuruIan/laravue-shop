@@ -41,24 +41,6 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                     Resend Verification Email
             </SecondaryButton>
 
-            <div class="mt-4 flex items-center justify-between">
-                <div>
-                    <Link
-                        :href="route('profile.show')"
-                        class="border border-gray-300 px-8 py-3  text-sm text-gray-600 hover:bg-indigo-600 hover:text-white rounded-sm focus:outline-none"
-                    >
-                        Edit Profile</Link>
-
-                    <Link
-                        :href="route('logout')"
-                        method="post"
-                        as="button"
-                        class="border border-gray-300 px-8 py-3  text-sm text-gray-600 hover:bg-red-600 hover:text-white rounded-sm focus:outline-none  ml-2"
-                    >
-                        Log Out
-                    </Link>
-                </div>
-            </div>
         </form>
     </AuthenticationCard>
 </template>

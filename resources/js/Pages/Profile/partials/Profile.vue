@@ -6,107 +6,63 @@
         <Navbar/>
         <form @submit.prevent="submit">
 
-            <!-- personal information -->
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-y-4 md:gap-4 py-2">
-                <div class="">
-                    <InputLabel for="firstname" value="Firstname" />
-                    <TextInput
-                        id="firstname"
-                        v-model="form.name"
-                        type="text"
-                        class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
-                        required
-                        placeholder="firstname"
-                    />
-                    <InputError class="mt-2" :message="form.errors.name" />
-                </div>
-
-                <div class="">
-                    <InputLabel for="lastname" value="Lastname" />
-                    <TextInput
-                        id="lastname"
-                        v-model="form.name"
-                        type="text"
-                        class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
-                        required
-                        placeholder="lastname"
-                    />
-                    <InputError class="mt-2" :message="form.errors.name" />
-                </div>
-            </div>
-
             <!-- contact information -->
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-y-4 md:gap-4 py-2">
-                <div class="">
+
+                <div class="mb-4">
                     <InputLabel for="phone" value="Phone number" />
                     <TextInput
                         id="phone"
-                        v-model="form.name"
+                        v-model="form.phone_number"
                         type="text"
                         class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                         required
                         placeholder="254 7XX XXX XXX"
                     />
-                    <InputError class="mt-2" :message="form.errors.name" />
+                    <InputError class="mt-2" :message="form.errors.phone_number" />
                 </div>
 
-                <div class="">
-                    <InputLabel for="email" value="Email" />
-                    <TextInput
-                        id="email"
-                        v-model="form.name"
-                        type="text"
-                        class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
-                        required
-                        placeholder="Doe@gmail.com"
-                    />
-                    <InputError class="mt-2" :message="form.errors.name" />
-                </div>
-           </div>
-
-           <div class="grid grid-cols-1 md:grid-cols-3 gap-y-4  py-2">
-            <div class="">
+            <div class="mb-4">
                 <InputLabel for="county" value="County" />
                 <TextInput
                     id="county"
-                    v-model="form.email"
+                    v-model="form.county"
                     type="text"
                     class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     placeholder="Kiambu"
                 />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="form.errors.county" />
             </div>
 
-            <div class="">
+            <div class="mb-4">
                 <InputLabel for="subcounty" value="Sub County" />
                 <TextInput
                     id="subcounty"
-                    v-model="form.email"
+                    v-model="form.sub_county"
                     type="text"
                     class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     placeholder="Ruiru"
                 />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="form.errors.sub_county" />
             </div>
 
-            <div class="">
+            <div class="mb-4">
                 <InputLabel for="ward" value="Ward" />
                 <TextInput
                     id="ward"
-                    v-model="form.email"
+                    v-model="form.ward"
                     type="text"
                     class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     placeholder="Theta"
                 />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="form.errors.ward" />
             </div>
-           </div>
+ 
             <div class="mt-6">
-                <SecondaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Update
+                <SecondaryButton type='submit' class="w-full text-base" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                   Save Profile
                 </SecondaryButton>
             </div>
         </form>
@@ -123,13 +79,36 @@ import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import Header from '@/Components/Header.vue';
 import Navbar from '@/Components/Navbar.vue';
 
+import  { createToaster } from "@meforma/vue-toaster";
+
+const toaster = createToaster({
+    position:"top-right",
+    duration:4000,
+})
+
+
 const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    terms: false,
+    phone_number: '',
+    county:'',
+    sub_county:'',
+    ward:'',
 });
+
+
+
+const submit=()=>{
+    form.post('/create/profile',{
+        onSuccess:()=>{
+            form.reset('county','phonenumber','subcounty','ward')
+        },
+        onError:(error)=>{
+            const values = Object.values(error)
+            values.forEach(value=>{
+            toaster.error(value)
+            })
+        }
+    })
+}
 
 </script>
 
