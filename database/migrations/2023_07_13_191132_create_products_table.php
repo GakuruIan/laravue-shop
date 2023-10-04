@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('colors')->nullable();
             $table->string('size')->nullable();
             $table->string('description');
+            $table->string('views')->default(0);
             $table->timestamps();
         });
     }

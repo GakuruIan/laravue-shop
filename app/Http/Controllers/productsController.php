@@ -64,6 +64,8 @@ class productsController extends Controller
             }
         }
 
+        DB::table('products')->increment('views');
+
         return response()->json($productWithImages);
     }
 
