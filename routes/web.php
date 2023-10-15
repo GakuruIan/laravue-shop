@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ResetController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\productsController;
 use App\Http\Controllers\CatergoryController;
 
@@ -147,11 +148,10 @@ Route::get('/admin/payments',function(){
 });
 
 // successful payments
-Route::get('/payment/success',function(){
-    return Inertia::render('Success/success');
-})->name('success');
+Route::get('/payment/success',[PaymentController::class,'Success'])->name('success');
 
 // failed  payments
-Route::get('/payment/failure',function(){
-    return Inertia::render('Failure/Failure');
-})->name('cancel');
+Route::get('/payment/failure',[PaymentController::class,'Cancel'])->name('cancel');
+
+// webhooks
+Route::post('/webhook',[PaymentController::class,'Webhook'])->name('webhook');

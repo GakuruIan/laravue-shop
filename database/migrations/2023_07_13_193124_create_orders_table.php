@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->default('pending');
+            $table->string('payment_status')->default('unpaid');
+            $table->string('delivery_status')->default('pending');
             $table->decimal('amount', 10, 2);
             $table->string('tracking_id')->unique();
+            $table->string('session_id')->nullable();
             $table->timestamps();
         });
     }

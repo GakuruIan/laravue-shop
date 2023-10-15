@@ -9,10 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory;
- 
+
+    public $table = 'orders';
+
     protected $fillable = [
        'amount',
-       'tracking_id'
+       'tracking_id',
+       'session_id',
+       'payment_status',
+       'delivery_status'
     ];
 
     public function orderitems():HasMany{
