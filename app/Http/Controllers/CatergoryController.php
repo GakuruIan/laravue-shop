@@ -11,6 +11,7 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use CloudinaryLabs\CloudinaryLaravel\Exceptions\UploadErrorException;
 
 
+// ! Refactor all the queries with the relationships
 
 class CatergoryController extends Controller
 {
@@ -23,53 +24,61 @@ class CatergoryController extends Controller
 
     // all Catergories
     public function FetchCatergories(){
-        $data = DB::table('catergory')->select('id','catergory_name')->get()->toArray();
+        $data = DB::table('catergory')->select('id','catergory_name','image')->get()->toArray();
         return response()->json($data);
+    }
+
+    // Fetch products of a certain category
+    public function CategoryProducts(Request $request){
+        $Catergory = Catergory::find($request->id);
+        $Products =  $Catergory->products()->with('images')->get()->toArray(); 
+
+        return Inertia::render('Category/Category',['Category'=> $Catergory,'Products'=>$Products]);
     }
 
     // create a new catergory
     public function create(Request $request)
-{
-   
-    $validated = $request->validate([
-        'catergory_name' => 'string|required|min:3|max:20',
-        'image' => 'required|image|mimes:jpeg,png,jpg|max:5120'
-    ]);
-
-    // checking if request has an image
-    if ($request->hasFile('image')) {
-
-        try {
-            set_time_limit(90);
-            $imagePath = $request->file('image')->getRealPath();
-
-            $uploadedImage = Cloudinary::upload($imagePath, [
-                'folder' => 'laravue/Catergory',
-                'transformation' => [
-                    'width' => 700,
-                    'height' => 800,
-                    'quality' => 'auto',
-                    'fetch' => 'auto',
-                    'crop' => 'scale',
-                ],
+        {
+        
+            $validated = $request->validate([
+                'catergory_name' => 'string|required|min:3|max:20',
+                'image' => 'required|image|mimes:jpeg,png,jpg|max:5120'
             ]);
 
-            $imageUrl = $uploadedImage->getSecurePath();
-            $publicId = $uploadedImage->getPublicId();
+            // checking if request has an image
+            if ($request->hasFile('image')) {
 
-            $validated['image'] = $imageUrl;
-            $validated['publicId'] = $publicId;
+                try {
+                    set_time_limit(90);
+                    $imagePath = $request->file('image')->getRealPath();
 
-        } catch (UploadApiException $e) {
-            //add a rollback incase of failure
-            throw ValidationException::withMessages(['message' => 'Error uploading Image.']);
+                    $uploadedImage = Cloudinary::upload($imagePath, [
+                        'folder' => 'laravue/Catergory',
+                        'transformation' => [
+                            'width' => 700,
+                            'height' => 800,
+                            'quality' => 'auto',
+                            'fetch' => 'auto',
+                            'crop' => 'scale',
+                        ],
+                    ]);
+
+                    $imageUrl = $uploadedImage->getSecurePath();
+                    $publicId = $uploadedImage->getPublicId();
+
+                    $validated['image'] = $imageUrl;
+                    $validated['publicId'] = $publicId;
+
+                } catch (UploadApiException $e) {
+                    //add a rollback incase of failure
+                    throw ValidationException::withMessages(['message' => 'Error uploading Image.']);
+                }
+            }
+
+            Catergory::create($validated);
+
+            return back()->with('message', 'Catergory added successfully');
         }
-    }
-
-     Catergory::create($validated);
-
-     return back()->with('message', 'Catergory added successfully');
- }
 
 //  updating a catergory
   public function update(Request $request){

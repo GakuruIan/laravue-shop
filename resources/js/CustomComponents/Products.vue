@@ -42,7 +42,7 @@
                       Add to Cart
                 </button>
             </div>
-         </div>
+    </div>
          <div class="flex justify-end w-full mt-4 py-2">
                 
 <nav aria-label="Page navigation example">
@@ -87,6 +87,7 @@
 import{ref} from 'vue'
 
 import { defineProps } from 'vue';
+import {split,backgroundColor} from '@/utils.js'
 
 let Products = ref([])
 
@@ -98,17 +99,6 @@ for(let product in products){
     id:product,
     ...products[product]
   })
-}
-
-// creating an array for size and color
-const split=(list)=>{
-  let array_list = list.split(',');
-  return array_list;
-}
-
-// dynamic creation of color backgound
-const backgroundColor=(color)=>{
-  return {'background-color':color}
 }
 
 </script>

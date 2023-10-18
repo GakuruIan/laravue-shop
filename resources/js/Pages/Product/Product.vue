@@ -1,7 +1,7 @@
 <template>
    <Navbar/>
     
-   <div v-if="Product" class="min-h-screen mt-12 md:mt-20 max-w-5xl mx-auto md:px-0 px-2">
+   <div v-if="Product" class="min-h-screen mt-12 md:mt-20 max-w-5xl mx-auto md:px-4 px-2">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 py-3 md:px-0 px-1">
             <div class="">
                 <img :src="Product.images[0].image" alt="" class=" w-full object-cover mb-6">
@@ -51,7 +51,7 @@
                   <button @click="ReducedQuantity()" class="flex  items-center justify-center border border-gray-400 hover:bg-[#222] group-hover hover:text-white px-6 py-2 w-full text-base">
                      -
                  </button>
-                  <input type="number" :value="quantity" class="px-4 border border-gray-400 py-2 w-1/2">
+                  <input type="number" :value="quantity" class="px-4 border border-gray-400 py-2 w-20">
                   <button @click="AddQuantity()" class="flex  items-center justify-center border border-gray-400 hover:bg-[#222] group-hover hover:text-white px-6 py-2 w-full text-base">
                         +
                   </button>
@@ -70,9 +70,12 @@
               </div>
             </div>
         </div>
-        <div class="">
-        <Row title="Related Products"/>
-      </div>
+
+        <!-- Row Component -->
+        <div class="min-h-56" ref="relatedContainer">
+             <Row title="Related Products" :data="RelatedProducts" :Loading="loading"/>
+        </div>
+        
    </div>
 
    <!-- loader -->
@@ -84,30 +87,85 @@
 </template>
 
 <script setup>
+import {onMounted, ref} from 'vue'
+
 import Navbar from '@/Components/Navbar.vue'
 import Footer from '@/CustomComponents/Footer.vue'
 import Loader from '@/CustomComponents/Loader.vue'
 import Row from '@/CustomComponents/Row.vue'
+import MiniLoader from '@/CustomComponents/MiniLoader.vue'
+
 import {split,backgroundColor,AddToCart} from '@/utils.js'
 import  { createToaster } from "@meforma/vue-toaster";
 
+// toaster
 const toaster = createToaster({ 
 position:"top-right",
 duration:4000,
  });
 
-
-import {ref} from 'vue'
-
+let RelatedProducts = ref({})
 let Product = ref({})
 let quantity = ref(1)
+let relatedContainer = ref(null)
+let loading = ref(false)
+let CategoryID = 0;
 
 const {product} = defineProps(['product'])
 
 
 for(let p in product){
    Product.value=product[p]
+  }
+
+CategoryID = Product.value.category_id;
+
+let loadData =()=>{
+  
+  loading.value = true
+
+    fetch(`/products/related/${CategoryID}`)
+      .then((response)=>{
+        if(response.ok && response.status === 200){
+          return response.json();
+        }
+      })
+      .then((data)=>{
+        RelatedProducts.value = data;
+        loading.value = false
+      })
+      .catch((err)=>{
+        loading.value = false
+        console.log(err)
+      })
 }
+
+onMounted(()=>{
+  
+  const options = {
+    root: null, 
+    rootMargin: '0px', 
+    threshold: 0.3, 
+  };
+ 
+  const intersectionObserver = new IntersectionObserver(handleIntersection, options);
+  
+  intersectionObserver.observe(relatedContainer.value);
+
+  function handleIntersection(entries){
+     entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        loadData();
+        intersectionObserver.unobserve(relatedContainer.value);
+      }
+    });
+  }
+
+
+})
+
+
+
 
 const AddQuantity=()=>{
    quantity.value = quantity.value +1

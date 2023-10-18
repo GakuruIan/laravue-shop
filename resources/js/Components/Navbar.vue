@@ -243,6 +243,5 @@ const submit = () => {
     })).post('/logout', {});
 };
 
-// make vuex persist
 
 </script>

@@ -103,6 +103,9 @@ Route::post('/create/product',[productsController::class,'create']);
 // Fetch single product
 Route::get('/products/{id}',[productsController::class,'FetchProduct']);
 
+// Fetch related products to the selected product
+Route::get('/products/related/{id}',[productsController::class,'RelatedProducts']);
+
 // Updating a product
 Route::put('/update/product/{id}',[productsController::class,'UpdateProduct']);
 
@@ -115,6 +118,9 @@ Route::get('/admin/catergory',[CatergoryController::class,'show']);
 
 // Fetching All catergories
 Route::get('/catergory/all',[CatergoryController::class,'FetchCatergories']);
+
+// Fetch products belonging to a certain category
+Route::get('/Category/{id}/products',[CatergoryController::class,'CategoryProducts']);
 
 // create a catergory
 Route::post('/create/catergory',[CatergoryController::class,'create']);

@@ -15,6 +15,7 @@ use CloudinaryLabs\CloudinaryLaravel\Exceptions\UploadErrorException;
 
 class productsController extends Controller
 {
+    // fetch all products
     public function index(){
 
         $products = DB::table('products')
@@ -27,6 +28,83 @@ class productsController extends Controller
         return Inertia::render('Admin/Products/Products',['products'=>$products]);
     }
 
+    // Fetch featured products
+    public function FeaturedProducts(){
+        $productWithImages = [];
+
+        $results = DB::table('featured')
+        ->join('products','featured.product_id','=','products.id')
+        ->join('productImages','featured.product_id','=','productImages.product_id')
+        ->select('products.*','productImages.image','productImages.publicId','catergory.catergory_name')
+        ->get()
+        ->toArray();
+
+        foreach($results as $row){
+            $product_id = $row->id;
+
+            if(!isset($productWithImages[$product_id])){
+
+                $productWithImages [$product_id] = [
+                    'id'=>$row->id,
+                    'name'=>$row->name,
+                    'price'=>$row->price,
+                    'color'=>$row->colors,
+                    'size'=>$row->size,
+                    'stock'=>$row->stock,
+                    'images'=>[],
+                    'category_name'=> $row->catergory_name
+                ];
+
+                if ($row->image) {
+                    $productWithImages [$product_id]['images'][] = [
+                        'image' => $row->image,
+                    ];
+                } 
+            }
+           
+        }
+
+        return response()->json($productWithImages);
+    }
+
+    // Fetch Related products
+    public function RelatedProducts(Request $request){
+
+        $productWithImages = [];
+
+        $results = DB::table('products')
+        ->join('productImages','products.id','=','productImages.product_id')
+        ->select('products.id','products.name','products.price','productImages.image','productImages.publicId',)
+        ->where('products.category_id', '=', $request->id)
+        ->limit(4)
+        ->get()
+        ->toArray();
+
+        foreach($results as $row){
+            $product_id = $row->id;
+
+            if(!isset($productWithImages[$product_id])){
+
+                $productWithImages [$product_id] = [
+                    'id'=>$row->id,
+                    'name'=>$row->name,
+                    'price'=>$row->price,
+                    'images'=>[]
+                ];
+
+                if ($row->image) {
+                    $productWithImages [$product_id]['images'][] = [
+                        'image' => $row->image,
+                    ];
+                } 
+            }
+           
+        }
+
+        return response()->json($productWithImages );
+    }
+
+    // Fetch a specific product - Admin
     public function FetchProduct(Request $request){
         $productWithImages = [];
 
@@ -64,11 +142,10 @@ class productsController extends Controller
             }
         }
 
-        DB::table('products')->increment('views');
-
         return response()->json($productWithImages);
     }
 
+    // Create a new product
     public function create(Request $request){
 
        $validated = $request->validate([
@@ -155,7 +232,7 @@ class productsController extends Controller
     }
 
    
-
+    // function to upload to cloudinary
     public function uploadPhotos($Images,$path){
         $failedUploads = [];
 
@@ -194,6 +271,8 @@ class productsController extends Controller
         return [$failedUploads,$uploadedImages];
     }
 
+
+    // function to delete a product image in cloudinary
     public function delete($id){
         $failedDeletions=[];
 
@@ -222,7 +301,7 @@ class productsController extends Controller
       return $failedDeletions;
     }
     
-
+    // update a product
     public function UpdateProduct(Request $request){
 
         $failedUploads=[];
@@ -290,6 +369,7 @@ class productsController extends Controller
           return back()->with('message',"An error occurred could not update product");
     }
 
+    // Delete a product
     public function DeleteProduct(products $product){
         $failedDeletions = [];
         

@@ -56,7 +56,7 @@ class ShopController extends Controller
         $results = DB::table('products')
         ->join('productImages','products.id','=','productImages.product_id')
         ->join('catergory','products.category_id','=','catergory.id')
-        ->select('products.*','productImages.image','productImages.publicId','catergory.catergory_name')
+        ->select('products.*','productImages.image','productImages.publicId','catergory.id as category_id','catergory.catergory_name')
         ->where('products.id','=',$request->id)
         ->get()
         ->toArray();
@@ -75,7 +75,8 @@ class ShopController extends Controller
                     'stock'=>$row->stock,
                     'description'=>$row->description,
                     'images'=>[],
-                    'category_name'=> $row->catergory_name
+                    'category_name'=>$row->catergory_name,
+                    'category_id'=> $row->category_id
                 ];
 
                 
@@ -86,6 +87,8 @@ class ShopController extends Controller
                 ];
             } 
         }
+
+        DB::table('products')->where('id',$request->id)->increment('views',1);
 
         return Inertia::render('Product/Product',['product'=>$productWithImages]);
     }
