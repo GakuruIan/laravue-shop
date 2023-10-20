@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use Inertia\Inertia;
-use App\Models\Catergory;
+use App\Models\Category;
+use App\Models\products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -13,27 +15,36 @@ use CloudinaryLabs\CloudinaryLaravel\Exceptions\UploadErrorException;
 
 // ! Refactor all the queries with the relationships
 
-class CatergoryController extends Controller
+class CategoryController extends Controller
 {
     //show catergories
     public function show(){
         
-        $data = DB::table('catergory')->get()->toArray();
-        return Inertia::render('Admin/Catergory/Catergory',['Catergories'=> $data]);
+        $data = DB::table('category')->get()->toArray();
+        return Inertia::render('Admin/Category/Category',['Categories'=> $data]);
     }
 
     // all Catergories
     public function FetchCatergories(){
-        $data = DB::table('catergory')->select('id','catergory_name','image')->get()->toArray();
+        $data = DB::table('category')->select('id','category_name','image')->get()->toArray();
         return response()->json($data);
     }
 
     // Fetch products of a certain category
     public function CategoryProducts(Request $request){
-        $Catergory = Catergory::find($request->id);
-        $Products =  $Catergory->products()->with('images')->get()->toArray(); 
+        $categoryName = $request->name;
 
-        return Inertia::render('Category/Category',['Category'=> $Catergory,'Products'=>$Products]);
+        $Catergory = Category::where('category_name',$request->name)->first();
+
+        if($Catergory){
+            $products = products::whereHas('category', function ($query) use ($categoryName) {
+                $query->where('category_name', $categoryName);
+            })->with('images')->get();
+    
+            return Inertia::render('Category/Category',['Category'=> $Catergory,'Products'=>$products]);
+        }
+
+        return redirect('/shop');
     }
 
     // create a new catergory
@@ -41,7 +52,7 @@ class CatergoryController extends Controller
         {
         
             $validated = $request->validate([
-                'catergory_name' => 'string|required|min:3|max:20',
+                'category_name' => 'string|required|min:3|max:20',
                 'image' => 'required|image|mimes:jpeg,png,jpg|max:5120'
             ]);
 
@@ -53,7 +64,7 @@ class CatergoryController extends Controller
                     $imagePath = $request->file('image')->getRealPath();
 
                     $uploadedImage = Cloudinary::upload($imagePath, [
-                        'folder' => 'laravue/Catergory',
+                        'folder' => 'laravue/Category',
                         'transformation' => [
                             'width' => 700,
                             'height' => 800,
@@ -75,24 +86,24 @@ class CatergoryController extends Controller
                 }
             }
 
-            Catergory::create($validated);
+            Category::create($validated);
 
-            return back()->with('message', 'Catergory added successfully');
+            return back()->with('message', 'Category added successfully');
         }
 
 //  updating a catergory
   public function update(Request $request){
 
     // getting category to be updated
-    $category = Catergory::findOrFail($request->id);
+    $category = Category::findOrFail($request->id);
 
     $validated = $request->validate([
-        'catergory_name' => 'string|required|min:3|max:20',
+        'category_name' => 'string|required|min:3|max:20',
         'image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120'
     ]);
 
     $category->fill($request->only([
-         'catergory_name'
+         'category_name'
     ]));
 
     
@@ -109,7 +120,7 @@ class CatergoryController extends Controller
            $imagePath = $request->file('image')->getRealPath();
 
            $uploadedImage = Cloudinary::upload($imagePath, [
-               'folder' => 'laravue/Catergory',
+               'folder' => 'laravue/Category',
                'transformation' => [
                    'width' => 700,
                    'height' => 800,
@@ -139,12 +150,12 @@ class CatergoryController extends Controller
 
     $category->save();
 
-    return back()->with('message',"Catergory updated successfully");
+    return back()->with('message',"Category updated successfully");
   }
   
   public function delete(Request $request){
 
-     $category = Catergory::find($request->id);
+     $category = Category::find($request->id);
     
      try {
         $response=Cloudinary::destroy($category->publicId);

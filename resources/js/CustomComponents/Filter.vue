@@ -1,5 +1,5 @@
 <template>
- <div class="max-w-5xl mx-auto px-2 md:px-0">
+ <div class="max-w-6xl mx-auto px-2 md:px-0">
   <div class="py-4 flex my-4  border-t border-b h-16 items-center justify-between h-12 ">
       <div class="flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">

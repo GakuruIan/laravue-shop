@@ -1,6 +1,6 @@
 <template>
   <div class="w-full fixed top-0 left-0 bg-white z-40 border-b">
-       <div class="relative h-16 px-2  md:px-4 md:h-20 max-w-6xl mx-auto flex justify-between items-center gap-2 ">
+       <div class="relative h-16 px-2  md:px-2 md:h-20 max-w-6xl mx-auto flex justify-between items-center gap-2 ">
            <div class="flex gap-2">
                     <a href="/" id="logo" class="text-2xl text-center">Laravue</a>
            </div>
@@ -16,10 +16,10 @@
                 </span>
               
                <li class="mt-2 text-white md:text-gray-500  hover:text-gray-400 hover:cursor-pointer">
-                    <a href="" class="">Men</a>
+                    <a href="/shop/Men" class="">Men</a>
                 </li>
                 <li class="mt-2 text-white md:text-gray-500 hover:text-gray-400 hover:cursor-pointer">
-                    <a href="">Women</a>
+                    <a href="/shop/Women">Women</a>
                 </li>
 
                 <li class="hover:cursor-pointer hover:text-gray-700 hidden md:block">
@@ -28,11 +28,11 @@
                 
                 
                 <li class="mt-2 text-white md:text-gray-500 hover:text-gray-400 hover:cursor-pointer">
-                    <a href="">Shoes</a>
+                    <a href="/shop/Shoes">Shoes</a>
                 </li>
 
                 <li class="mt-2 text-white md:text-gray-500 hover:text-gray-400 hover:cursor-pointer">
-                    <a href="">Baby</a>
+                    <a href="/shop/Baby">Baby</a>
                 </li>
 
                 <li class="md:hidden block mt-2  text-white hover:text-gray-400 hover:cursor-pointer">
@@ -227,16 +227,18 @@
 
 <script setup>
 import Dropdown from './Dropdown.vue'
-import { useForm } from '@inertiajs/vue3';
-import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue'
+import { useStore } from 'vuex';
 
 const store = useStore();
 
-const form = useForm({
-});
+onMounted(()=>{
+    // ! add get logged user in store
+    const userInfo = computed(() => store.getters.user);
 
+    console.log(userInfo)
+})
 
 const submit = () => {
     form.transform(data => ({

@@ -1,11 +1,14 @@
 <template>
   <Navbar/>
-  <MiniBanner :category="Category.catergory_name" :img="Category.image"/>
+  <MiniBanner :title="category.category_name" :img="category.image"/>
+  <Filter/>
   
-    <div class="min-h-[calc(100vh-100px)]">
-       <div class="">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 py-4">
-         <div class="p-2" v-for="product in Products" :key="product.id">
+    <div class="">
+       <div class="min-h-[calc(100vh-200px)]  max-w-6xl mx-auto">
+        <h1 class="text-base md:text-2xl text-gray-500">{{category.category_name}}</h1>
+
+        <div v-if="Products.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 py-4">
+        <div class="p-0" v-for="product in Products" :key="product.id">
             <img :src="product.images[0].image" alt="" class="h-56 w-full object-cover">
 
             <div class="flex items-center justify-between mt-2">
@@ -13,7 +16,7 @@
                 <p class="text-sm">{{product.price}}</p>
             </div>
 
-           
+        
 
             <!-- size -->
             <div class="flex items-center gap-3 my-3">
@@ -35,16 +38,20 @@
             <!-- stock -->
             <div class="flex items-center gap-3 my-3">
                 <p class="text-sm">In Stock:</p>
-                 <p class="text-sm text-gray-400">{{ product.stock }} remaining</p>
+                <p class="text-sm text-gray-400">{{ product.stock }} remaining</p>
             </div>
 
             <!-- buttons -->
 
                 <button class="flex  items-center justify-center border border-gray-400 hover:bg-[#222] group-hover hover:text-white px-6 py-2 w-full text-base mt-4">
-                      Add to Cart
+                    Add to Cart
                 </button>
             </div>
-    </div>
+        </div>
+
+        <div v-else class="flex items-center justify-center h-auto">
+            <p class="text-xl md:text-2xl text-gray-500">No products</p>
+        </div>
        </div>
     </div>
 
@@ -55,7 +62,9 @@
 import Navbar from '@/Components/Navbar.vue'
 import MiniBanner from "@/CustomComponents/MiniBanner.vue";
 import Footer from '@/CustomComponents/Footer.vue';
-import { ref } from 'vue';
+import Filter from '@/CustomComponents/Filter.vue';
+
+import { onMounted, ref } from 'vue';
 
 import {split,backgroundColor,AddToCart} from '@/utils.js'
 
@@ -63,6 +72,11 @@ let category = ref({});
 
 const  {Products,Category}  = defineProps(['Products','Category']);
 
-console.log(Products)
+
+
+onMounted(()=>{
+    category.value = Category[0];
+})
+
 
 </script>

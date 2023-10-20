@@ -70,7 +70,7 @@
 
   <!-- cart view -->
   <div class="max-w-5xl mx-auto py-2 mt-12 md:mt-20">
-      <div class="flex items-center border-b justify-between py-4 mb-4 px-2 md:px-0">
+      <div class="flex items-center border-b justify-between py-4 mb-4 px-2 md:px-2">
         <h6 class="text-xl">Cart</h6>
         <a href="/shop" class="text-sm text-gray-700 hover:text-gray-400 hover:cursor-pointer hover:underline">Continue Shopping</a>
       </div>
@@ -159,7 +159,7 @@
                 <h1 class="text-xl md:text-2xl text-gray-400">Cart is Empty</h1>
             </div>
 
-            <div v-if="Cart.length > 0" class="flex flex-col  gap-4 items-end mt-4">
+            <div v-if="Cart.length > 0" class="flex flex-col  gap-4 items-end mt-4 px-2 md:px-4">
                     <h6 class="text-base text-gray-400">Total Price Ksh: {{ total }}</h6>
                     <div class="flex gap-2">
                         <button  @click="ClearCart()" class="bg-red-600  hover:text-white text-white hover:bg-red-400 px-4 py-2  text-base ">
@@ -229,7 +229,7 @@
                       </div>
                   </div>
               <!-- single product -->
-                <div class="flex gap-2 justify-end mt-4">
+                <div class="flex gap-2 justify-end mt-4 ">
                         <button @click="ClearCart()" class="bg-red-600  hover:text-white text-white hover:bg-red-400 px-4 py-2  text-base ">
                             Clear Cart
                         </button>

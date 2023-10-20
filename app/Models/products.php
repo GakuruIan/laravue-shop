@@ -24,8 +24,8 @@ class products extends Model
         'category_id'
     ];
     
-    public function catergory() :BelongsTo{
-        return $this->belongsTo(Catergory::class);
+    public function category() :BelongsTo{
+        return $this->belongsTo(Category::class);
     }
     
     public function images() :HasMany{

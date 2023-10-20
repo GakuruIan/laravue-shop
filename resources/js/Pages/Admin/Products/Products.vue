@@ -18,8 +18,8 @@
           <div class="mb-4">
             <label for="catergory" class="block mb-2 text-sm font-medium text-gray-900">Product catergory</label>
               <select id="customselect" v-model="form.category_id"  class="block appearance-none w-full  border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-placeholder="Select Catergory">
-                 <option disabled v-if="Catergories.length === 0">Loading...</option>
-                <option :value="catergory.id" v-for="catergory in Catergories" :key="catergory.id">{{ catergory.catergory_name }}</option>
+                 <option disabled v-if="Categories.length === 0">Loading...</option>
+                <option :value="category.id" v-for="category in Categories" :key="category.id">{{ category.category_name }}</option>
               </select>
             <InputError class="mt-2" :message="form.errors.category_id" />
           </div>
@@ -123,8 +123,8 @@
               <div class="mb-4">
                 <label for="catergory" class="block mb-2 text-sm font-medium text-gray-900">Product catergory</label>
                   <select id="customselect" @click="GetCategories()" v-model="form.category_id"  class="block appearance-none w-full  border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-placeholder="Select Catergory">
-                    <option disabled v-if="Catergories.length === 0">Loading...</option>
-                    <option :value="catergory.id" v-for="catergory in Catergories" :key="catergory.id">{{ catergory.catergory_name }}</option>
+                    <option disabled v-if="Categories.length === 0">Loading...</option>
+                    <option :value="category.id" v-for="category in Categories" :key="category.id">{{ category.category_name }}</option>
                   </select>
                 <InputError class="mt-2" :message="form.errors.category_id" />
               </div>
@@ -393,7 +393,7 @@ duration:4000,
 
 let show = ref(false);
 let ImagePreviews = ref([])
-let Catergories = ref([])
+let Categories = ref([])
 let rows = ref([])
 let search = ref("")
 let showEdit = ref(false)
@@ -420,14 +420,14 @@ const form = useForm({
 
 // Fetching product categories
 const GetCategories =()=>{
-   if(Catergories.value.length === 0){
-    fetch('/catergory/all')
+   if(Categories.value.length === 0){
+    fetch('/category/all')
       .then((response)=>{
         if(response.ok){
           return response.json()
         }
       }).then((data)=>{
-        Catergories.value = data;
+        Categories.value = data;
       })
       .catch((err)=>{
         console.log(err)
@@ -441,13 +441,13 @@ const toggleModal =()=>{
     show.value = !show.value;
 
     if(show.value){
-      fetch('/catergory/all')
+      fetch('/category/all')
       .then((response)=>{
         if(response.ok){
           return response.json()
         }
       }).then((data)=>{
-        Catergories.value = data;
+        Categories.value = data;
       })
       .catch((err)=>{
         console.log(err)

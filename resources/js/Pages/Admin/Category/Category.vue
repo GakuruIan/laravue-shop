@@ -11,8 +11,8 @@
                 <!-- catergory name -->
                 <div class="mb-4">
                   <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Catergory name</label>
-                  <input type="text" id="name"  v-model="form.catergory_name" class="w-full rounded-sm border border-gray-200 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Men , Women , Baby " required>
-                  <InputError class="mt-2" :message="form.errors.catergory_name" />
+                  <input type="text" id="name"  v-model="form.category_name" class="w-full rounded-sm border border-gray-200 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Men , Women , Baby " required>
+                  <InputError class="mt-2" :message="form.errors.category_name" />
                 </div>
 
                   <!-- catergory image --> 
@@ -80,9 +80,9 @@
 
                 <!-- catergory name -->
                 <div class="mb-4">
-                  <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Catergory name</label>
-                  <TextInput type="text" id="name"  v-model="form.catergory_name" class="w-full rounded-sm border border-gray-200 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Men , Women , Baby " required/>
-                  <InputError class="mt-2" :message="form.errors.catergory_name" />
+                  <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Category name</label>
+                  <TextInput type="text" id="name"  v-model="form.category_name" class="w-full rounded-sm border border-gray-200 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Men , Women , Baby " required/>
+                  <InputError class="mt-2" :message="form.errors.category_name" />
                 </div>
 
                   <!-- catergory image --> 
@@ -219,7 +219,7 @@ duration:4000,
 
 
 
-const { Catergories } = defineProps(['Catergories']);
+const { Categories } = defineProps(['Categories']);
 
 let show  = ref(false)
 let showEdit = ref(false);
@@ -232,7 +232,7 @@ let name = ref("")
 let deleteid = ref(0);
 
  const form = useForm({
-    catergory_name:'',
+    category_name:'',
     image:null,
  })
 
@@ -259,19 +259,19 @@ let deleteid = ref(0);
 const closeModal=()=>{
     show.value =false;
     URL.revokeObjectURL(image_preview.value);
-    form.reset('catergory_name','image')
+    form.reset('category_name','image')
 }
 
 //  submitting form
 const submit=()=>{
 
-form.post('/create/catergory', {
+form.post('/create/category', {
       onFinish: () => {
-        form.reset('catergory_name','image')
+        form.reset('category_name','image')
       }, 
       onSuccess:()=>{
           show.value = false;
-          toaster.success("Catergory created successfully");
+          toaster.success("Category created successfully");
       },
       onError: (error) => {
         const values = Object.values(error);
@@ -289,23 +289,23 @@ form.post('/create/catergory', {
  const headers = [
           {text:'Id',value:'id',sortable:true},
           {text:"Image",value:"image"},
-          {text: 'Catergory name',value: 'catergory_name' },
+          {text: 'Category name',value: 'category_name' },
           {text: 'Created',value: 'created_at' },
           {text: 'Updated',value: 'updated_at' },
           {text:'Action',value:"action"}
     ];
-let rows = Catergories
+let rows = Categories
 
 // opens edit modal
 const EditModal=(id)=>{
 
-  Category.value = Catergories.filter(category=>{
+  Category.value = Categories.filter(category=>{
       return category.id === id
   });
 
-  const {catergory_name,image } = Category.value[0];
+  const {category_name,image } = Category.value[0];
 
-  form.catergory_name = catergory_name
+  form.category_name = category_name
 
   image_preview.value = image;
 
@@ -318,13 +318,13 @@ const Editsubmit=()=>{
   
   router.post(`/category/update/${id}`,{
     _method:'put',
-    catergory_name:form.catergory_name,
+    category_name:form.category_name,
     image:form.image,
     onSuccess:()=>{
-       showEdit.value=false;
-       form.reset('catergory_name','image')
+       showEdit.value = false;
+       form.reset('category_name','image')
        image_preview = null;
-       toaster.success("Catergory updated successfully");
+       toaster.success("Category updated successfully");
     },
     onError:(error)=>{
       const values = Object.values(error);
@@ -341,7 +341,7 @@ const Editsubmit=()=>{
 // show delete confirmation modal
 const showDeleteConfirmation=(id)=>{
 
-  Category.value = Catergories.filter(category=>{
+  Category.value = Categories.filter(category=>{
       return category.id === id
   });
 

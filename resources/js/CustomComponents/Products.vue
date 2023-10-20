@@ -1,14 +1,14 @@
 <template>
-  <div class="max-w-5xl mx-auto px-2 md:px-0 ">
-    <h6 class="text-lg mb-2">Products</h6>
+  <div class="max-w-6xl mx-auto px-2 md:px-2 ">
+    <h1 class="text-lg mb-2">Products</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 py-4">
-         <div class="p-2" v-for="product in Products" :key="product.id">
+         <div class="p-0" v-for="product in Products" :key="product.id">
             <img :src="product.images[0].image" alt="" class="h-56 w-full object-cover">
 
             <div class="flex items-center justify-between mt-2">
-                <a :href="'/product/'+ product.id" class="text-base md:text-xl text-gray-800 hover:text-gray-400 hover:cursor-pointer hover:underline">{{ product.name }}</a>
-                <p class="text-sm">{{product.price}}</p>
+                <a :href="'/product/'+ product.id" class="text-base md:text-base text-gray-800 hover:text-gray-400 hover:cursor-pointer hover:underline">{{ product.name }}</a>
+                <p class="text-sm">Ksh {{product.price}}</p>
             </div>
 
            
@@ -26,7 +26,7 @@
             <div class="flex items-center gap-3 my-3">
                 <p class="text-sm">Color :</p>
                 <div class="flex items-center gap-3" >
-                    <span v-for="color,index in split(product.color)" :key="index" class="flex items-center justify-center p-2 rounded-full hover:cursor-pointer" :style="backgroundColor(color)" ></span>
+                    <span v-for="color,index in split(product.colors)" :key="index" class="flex items-center justify-center p-2 rounded-full hover:cursor-pointer" :style="backgroundColor(color)" ></span>
                 </div>
             </div>
 

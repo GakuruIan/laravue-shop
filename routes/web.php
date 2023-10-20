@@ -10,7 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\productsController;
-use App\Http\Controllers\CatergoryController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +78,9 @@ Route::post('/email/verification-notification',[EmailController::class,'ResendVe
 // Fetch a single product
 Route::get('/product/{id}',[ShopController::class,'FetchProduct']);
 
+// Fetch trending products
+Route::get('/products/trending',[productsController::class,'TrendingProducts']);
+
 
 //Cart page route
 Route::get('/cart',function(){
@@ -114,22 +117,22 @@ Route::delete('/delete/product/{product}',[productsController::class,'DeleteProd
 
 
 // admin Catergories
-Route::get('/admin/catergory',[CatergoryController::class,'show']);
+Route::get('/admin/category',[CategoryController::class,'show']);
 
 // Fetching All catergories
-Route::get('/catergory/all',[CatergoryController::class,'FetchCatergories']);
+Route::get('/category/all',[CategoryController::class,'FetchCatergories']);
 
 // Fetch products belonging to a certain category
-Route::get('/Category/{id}/products',[CatergoryController::class,'CategoryProducts']);
+Route::get('/shop/{name}',[CategoryController::class,'CategoryProducts']);
 
 // create a catergory
-Route::post('/create/catergory',[CatergoryController::class,'create']);
+Route::post('/create/category',[CategoryController::class,'create']);
 
 // updating a category
-Route::put('/category/update/{id}',[CatergoryController::class,'update']);
+Route::put('/category/update/{id}',[CategoryController::class,'update']);
 
 // deleting catergory
-Route::delete('/category/delete/{id}',[CatergoryController::class,'delete']);
+Route::delete('/category/delete/{id}',[CategoryController::class,'delete']);
 
 
 // Orders

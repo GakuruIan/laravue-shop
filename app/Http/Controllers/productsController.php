@@ -13,19 +13,29 @@ use Illuminate\Validation\ValidationException;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use CloudinaryLabs\CloudinaryLaravel\Exceptions\UploadErrorException;
 
+// ! refactor the queries according to the relationships
+// ! Create make a separate admin site
+
 class productsController extends Controller
 {
     // fetch all products
     public function index(){
 
         $products = DB::table('products')
-            ->join('catergory','products.category_id','=','catergory.id')
-            ->select('products.*','catergory.catergory_name')
+            ->join('category','products.category_id','=','category.id')
+            ->select('products.*','category.category_name')
             ->get()->toArray();
 
 
 
         return Inertia::render('Admin/Products/Products',['products'=>$products]);
+    }
+
+    // Fetch trending Products
+    public function TrendingProducts(){
+        $products = products::with('images')->where('views','>',1)->limit(4)->get();
+
+        return response()->json($products);
     }
 
     // Fetch featured products

@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Catergory extends Model
+class Category extends Model
 {
     use HasFactory;
 
-    public $table = 'catergory';
+    public $table = 'category';
 
 
     protected  $fillable =[
-            'catergory_name',
+            'category_name',
             'image',
             'publicId'
         ];

@@ -22,7 +22,7 @@
   
               <div class="py-2 w-full " v-for="product in data" :key="product.id">
                     <img :src="product.images[0].image" alt=""  class="h-44 rounded-sm md:h-44 w-full md:w-full object-fit"/>
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center mt-1">
                       <a href="/" class="text-base hover:text-gray-700 hover:underline">{{product.name}}</a>
                       <p class="text-base text-gray-400">Ksh {{product.price}}</p>
                     </div>

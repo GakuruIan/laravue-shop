@@ -1,6 +1,6 @@
 <template>
   <Navbar/>
-  <MiniBanner catergory="Products" :img="shopping1"/>
+  <MiniBanner title="Products" :img="shopping1"/>
    <Filter/>
    <Products :products="products"/>
    <Footer/>
