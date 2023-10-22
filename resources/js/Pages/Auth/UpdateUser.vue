@@ -1,68 +1,55 @@
 <template>
-    <Head title="Profile" />
+    <Head title="Update " />
 
     <AuthenticationCard>
-        <Header subtitle="Profile"/>
+        <Header subtitle="Update Profile"/>
         <Navbar/>
         <form @submit.prevent="submit">
 
             <!-- contact information -->
 
                 <div class="mb-4">
-                    <InputLabel for="phone" value="Phone number" />
+                    <InputLabel for="Firstname" value="Firstname" />
                     <TextInput
-                        id="phone"
-                        v-model="form.phone_number"
+                        id="Firstname"
+                        v-model="form.firstname"
                         type="text"
                         class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                         required
-                        placeholder="254 7XX XXX XXX"
+                        placeholder="John"
                     />
-                    <InputError class="mt-2" :message="form.errors.phone_number" />
+                    <InputError class="mt-2" :message="form.errors.firstname" />
                 </div>
 
             <div class="mb-4">
-                <InputLabel for="county" value="County" />
+                <InputLabel for="lastname" value="Lastname" />
                 <TextInput
-                    id="county"
-                    v-model="form.county"
+                    id="lastname"
+                    v-model="form.lastname"
                     type="text"
                     class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
-                    placeholder="Kiambu"
+                    placeholder="Doe"
                 />
-                <InputError class="mt-2" :message="form.errors.county" />
+                <InputError class="mt-2" :message="form.errors.lastname" />
             </div>
 
             <div class="mb-4">
-                <InputLabel for="subcounty" value="Sub County" />
+                <InputLabel for="email" value="Email" />
                 <TextInput
-                    id="subcounty"
-                    v-model="form.sub_county"
+                    id="email"
+                    v-model="form.email"
                     type="text"
                     class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
                     required
                     placeholder="Ruiru"
                 />
-                <InputError class="mt-2" :message="form.errors.sub_county" />
-            </div>
-
-            <div class="mb-4">
-                <InputLabel for="ward" value="Ward" />
-                <TextInput
-                    id="ward"
-                    v-model="form.ward"
-                    type="text"
-                    class="mt-1 block w-full placeholder:text-sm placeholder:text-gray-500"
-                    required
-                    placeholder="Theta"
-                />
-                <InputError class="mt-2" :message="form.errors.ward" />
+                <InputError class="mt-2" :message="form.errors.email" />
             </div>
  
             <div class="mt-6">
                 <SecondaryButton type='submit' class="w-full text-base" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                   Save Profile
+                   Update profile
                 </SecondaryButton>
             </div>
         </form>
@@ -70,7 +57,7 @@
 </template>
 
 <script setup>
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm ,router } from '@inertiajs/vue3';
 import SecondaryButton from '@/Components/SecondaryButton.vue'
 import InputError from '@/Components/InputError.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -78,34 +65,48 @@ import InputLabel from '@/Components/InputLabel.vue';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import Header from '@/Components/Header.vue';
 import Navbar from '@/Components/Navbar.vue';
+import {onMounted, ref} from 'vue'
 
 import  { createToaster } from "@meforma/vue-toaster";
+
+
+const {user,message} = defineProps(['user','message'])
+
+let userID = ref(0)
 
 const toaster = createToaster({
     position:"top-right",
     duration:4000,
 })
 
+onMounted(()=>{
+    form.firstname = user.firstname
+    form.lastname = user.lastname
+    form.email = user.email
+    userID.value = user.id
+})
 
 const form = useForm({
-    phone_number: '',
-    county:'',
-    sub_county:'',
-    ward:'',
+    firstname: '',
+    lastname:'',
+    email: '',
 });
 
-
-
 const submit=()=>{
-    form.post('/create/profile',{
+   
+    router.post(`/update/user/${userID.value}`,{
+        _method:'put',
+        firstname:form.firstname,
+        lastname:form.lastname,
+        email:form.email,
         onSuccess:()=>{
-            form.reset('county','phonenumber','subcounty','ward')
+            toaster.success("Profile updated successfully")
         },
         onError:(error)=>{
-            const values = Object.values(error)
-            values.forEach(value=>{
-            toaster.error(value)
-            })
+          const values = Object.values(error)
+             values.forEach(value=>{
+             toaster.error(value)
+          })
         }
     })
 }

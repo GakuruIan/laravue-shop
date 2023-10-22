@@ -32,11 +32,11 @@ const submit = () => {
     form.post('/register', {
         onFinish: () => form.reset('password', 'password_confirmation'),
         onSuccess:async(response)=>{
+            toaster.success("Check your for verfication link")
             const user = response.props.auth.user;
             await store.dispatch('setUser',user)
             const id = store.state.user.id
-
-            window.location = `/profile`
+            window.location = `/`
         },
         onError:(error)=>{     
         const values = Object.values(error)

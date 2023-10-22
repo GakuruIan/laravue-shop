@@ -18,35 +18,20 @@ class UserController extends Controller
         return Inertia::render('Auth/Register');
     }
 
-    //login form
+    //show login form
     public function LoginForm(){
         return Inertia::render('Auth/Login');
     }
+    
+    public function UpdateForm(){
 
-    // show profile form
-    public function ShowProfile(){
-        return Inertia::render('Profile/partials/Profile');
-    }
-
-    // create profile function
-    public function CreateProfile(Request $request){
-
-        $validatedData = $request->validate([
-            'phone_number' => 'required',
-            'county' => 'required|min:5|max:20',
-            'sub_county' => 'required|min:5|max:20',
-            'ward' => 'required|min:5|max:20',
-        ]);
-
-        if(Auth::check()){
-            $validatedData['user_id'] = Auth::user()->id;
-            
-            Profile::create($validatedData);
-            
-            return redirect('/')->with('message','Profile successfully created');
-        }
-
-        return redirect()->back()->with('message',"You have to be Authenticated");
+        $user = [
+            'id'=>Auth::user()->id,
+            'firstname'=>Auth::user()->firstname,
+            'lastname'=>Auth::user()->lastname,
+            'email'=>Auth::user()->email
+        ];        
+        return Inertia::render('Auth/UpdateUser',['user'=>$user]);
     }
     
     //register function
@@ -81,12 +66,32 @@ class UserController extends Controller
 
         if(Auth::attempt($credentials,$remember)){
             $user = Auth::user();
+            
             return redirect()->back()->with('user', $user);
         }
 
         return redirect()->back()->withErrors([
             'email' => 'Invalid email or password.',
         ]);
+    }
+
+    // Update user information
+    public function UpdateProfile(Request $request){
+        
+        $validated = $request->validate([
+            'firstname' => 'required|max:10|min:3',
+            'lastname' => 'required|max:10|min:3',
+            'email' => 'required|email',
+        ]);
+
+        $user = User::find($request->id);
+
+        if($user){
+            $user->update($validated);
+            return redirect()->back()->with(['message'=>"Profile successfully updated"]);
+        }
+
+        return redirect()->back()->with(['message'=>"An error Occured"]);
     }
 
     // logout a user

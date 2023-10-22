@@ -13,7 +13,7 @@ defineProps({
             <slot />
         </button>
 
-        <a v-else-if="as =='a'" :href="href" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+        <a v-else-if="as =='a'" :href="href" class="flex items-center gap-2 px-2 py-3 text-sm leading-5 w-full text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
             <slot />
         </a>
 

@@ -49,16 +49,16 @@ Route::get('/register',[UserController::class, 'RegisterForm']);
 Route::post('/register',[UserController::class,'Register']);
 
 //Profile route
-Route::get('/profile',[UserController::class,'ShowProfile'])->middleware(['auth', 'verified']);
+Route::get('/profile',[UserController::class,'UpdateForm'])->middleware(['auth', 'verified']);
 
 // Create  profile route
-Route::post('/create/profile',[UserController::class,'CreateProfile']);
+Route::put('/update/user/{id}',[UserController::class,'UpdateProfile']);
 
 // Reset Password Page
 Route::get('/reset-password/{token}',[ResetController::class,'ResetForm'])->middleware('guest')->name('password.reset');
 
 //Reset password
-Route::post('/reset-password',[ResetController::class,'HandleReset']);
+Route::put('/reset-password',[ResetController::class,'HandleReset']);
 
 // Forgot password page
 Route::get('/forgot-password',[ResetController::class,'ForgotPassword']);
@@ -80,6 +80,9 @@ Route::get('/product/{id}',[ShopController::class,'FetchProduct']);
 
 // Fetch trending products
 Route::get('/products/trending',[productsController::class,'TrendingProducts']);
+
+// Adding product to wishlist
+Route::post('/wishlist/add',[productsController::class,'AddToWishList']);
 
 
 //Cart page route

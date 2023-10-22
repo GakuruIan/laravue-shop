@@ -8,11 +8,16 @@ import Header from '../../Components/Header.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue'
 import TextInput from '@/Components/TextInput.vue';
 
-
-
 import { useStore } from 'vuex';
+import  { createToaster } from "@meforma/vue-toaster";
 
 const store = useStore();
+
+//Toast
+const toaster = createToaster({ 
+position:"top-right",
+duration:4000,
+ });
 
 defineProps({
     canResetPassword: Boolean,
@@ -36,12 +41,16 @@ const submit = () => {
 
         onSuccess:async(response)=>{
             const user = response.props.auth.user;
-            await store.dispatch('setUser',user);
-            window.location.href = '/';
+
+            await store.dispatch('setUser',user)
+            await store.dispatch('setSuccessLogin',true)
+            
+            window.location = '/'
         },
         
-        onError: (error) => {
-          console.error(error);
+        onError: async(error) => {
+         await store.dispatch('failedLogin',false)
+         toaster.error(error)
         },
     });
 };

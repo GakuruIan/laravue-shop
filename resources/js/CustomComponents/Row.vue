@@ -14,7 +14,7 @@
         <div>
 
           <!-- loader -->
-          <div  v-if="Loading && Products">
+          <div  v-if="Loading">
              <MiniLoader/>
           </div>
 

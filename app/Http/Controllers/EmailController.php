@@ -23,6 +23,7 @@ class EmailController extends Controller
 
     //resends the verification link
     public function ResendVerificationLink(Request $request){
+
         $request->user()->sendEmailVerificationNotification();
 
         return back()->with('message', 'Verification link sent!');

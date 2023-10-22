@@ -5,6 +5,13 @@ import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue'
 import Header from '@/Components/Header.vue';
 
+import  { createToaster } from "@meforma/vue-toaster";
+
+const toaster = createToaster({
+    position:"top-right",
+    duration:4000,
+})
+
 const props = defineProps({
     status: String,
 });
@@ -12,10 +19,16 @@ const props = defineProps({
 const form = useForm({});
 
 const submit = () => {
-    form.post(route('verification.send'));
+    form.post(route('verification.send'),{
+        onSuccess:()=>{
+            toaster.success("verification-link-sent")
+        },
+        onError:(error)=>{
+            toaster.error(error)
+        }
+    });
 };
 
-const verificationLinkSent = computed(() => props.status === 'verification-link-sent');
 </script>
 
 <template>
@@ -37,7 +50,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 
         <form @submit.prevent="submit">
 
-            <SecondaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <SecondaryButton type="submit" class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Resend Verification Email
             </SecondaryButton>
 

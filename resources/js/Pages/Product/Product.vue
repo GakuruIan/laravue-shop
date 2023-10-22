@@ -61,7 +61,7 @@
 
             <!-- buttons -->
               <div class="flex items-center gap-2">
-                <button class="flex  items-center justify-center border border-gray-400 hover:bg-[#222] group-hover hover:text-white px-6 py-2 w-full text-base mt-4">
+                <button @click="AddToWishList()" :disabled="form.processing" class="flex  items-center justify-center border border-gray-400 hover:bg-[#222] group-hover hover:text-white px-6 py-2 w-full text-base mt-4">
                       Add to WishList
                 </button>
                 <button @click="AddCart()" class="flex  items-center justify-center border border-gray-400 bg-[#222] text-white hover:bg-transparent group-hover hover:text-gray-500 px-6 py-2 w-full text-base mt-4">
@@ -88,6 +88,8 @@
 
 <script setup>
 import {onMounted, ref} from 'vue'
+import { useStore } from 'vuex';
+import {useForm } from '@inertiajs/vue3';
 
 import Navbar from '@/Components/Navbar.vue'
 import Footer from '@/CustomComponents/Footer.vue'
@@ -97,6 +99,8 @@ import MiniLoader from '@/CustomComponents/MiniLoader.vue'
 
 import {split,backgroundColor,AddToCart} from '@/utils.js'
 import  { createToaster } from "@meforma/vue-toaster";
+
+const store = useStore()
 
 // toaster
 const toaster = createToaster({ 
@@ -110,7 +114,14 @@ let relatedContainer = ref(null)
 let loading = ref(false)
 let CategoryID = 0;
 
+
 const {product} = defineProps(['product'])
+
+
+const form=useForm({
+  product_id:'',
+  user_id:''
+})
 
 
 CategoryID = product.category_id;
@@ -160,8 +171,6 @@ onMounted(()=>{
 })
 
 
-
-
 const AddQuantity=()=>{
    quantity.value = quantity.value +1
 }
@@ -175,7 +184,7 @@ const ReducedQuantity=()=>{
   }
 }
 
-
+// Add item to cart
 const AddCart=()=>{
   let colors = document.querySelectorAll('.color')
   let sizes = document.querySelectorAll('.size')
@@ -207,6 +216,33 @@ const AddCart=()=>{
    AddToCart(Order,id)
 
    toaster.success("Added to cart")
+}
+
+// Add item to wishlist
+const AddToWishList = ()=>{
+  const LoggedIn = store.state.LoggedIn
+
+  if(LoggedIn){
+  const user = store.state.user
+    form.transform(data=>({
+      product_id :product.id,
+      user_id:user.id
+    })).post('/wishlist/add',{
+      onSuccess:()=>{
+        toaster.success("Product added to wishList")
+      },
+      onError:(error)=>{
+        const values = Object.values(error)
+        values.forEach(value=>{
+         toaster.error(value)
+       })
+      }
+     })
+  }
+  else{
+    window.location = '/login'
+  }
+
 }
 
 </script>

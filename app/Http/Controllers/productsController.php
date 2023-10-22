@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\products;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use App\Models\productImages;
 use Illuminate\Support\Facades\DB;
@@ -26,16 +27,28 @@ class productsController extends Controller
             ->select('products.*','category.category_name')
             ->get()->toArray();
 
-
-
         return Inertia::render('Admin/Products/Products',['products'=>$products]);
     }
 
     // Fetch trending Products
     public function TrendingProducts(){
         $products = products::with('images')->where('views','>',1)->limit(4)->get();
-
         return response()->json($products);
+    }
+
+    // add product to wishlist
+    public function AddToWishList(Request $request){
+    
+        $validated = $request->validate([
+            'product_id'=>'required',
+             'user_id'=>'required',
+        ]);
+
+        // !check that user doesnt add the same product twice
+
+        Wishlist::create($validated);
+        
+        return redirect()->back()->with(['message'=>'Product added successfully']);
     }
 
     // Fetch featured products
@@ -155,6 +168,7 @@ class productsController extends Controller
         return response()->json($productWithImages);
     }
 
+    // ! add database transcation in here
     // Create a new product
     public function create(Request $request){
 

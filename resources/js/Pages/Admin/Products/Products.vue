@@ -490,7 +490,7 @@ const toggleEditModal=(id)=>{
       })
       .catch((error)=>{
            showEdit.value= false;
-          toaster.error(error)
+            toaster.error(error)
       })
 
     }

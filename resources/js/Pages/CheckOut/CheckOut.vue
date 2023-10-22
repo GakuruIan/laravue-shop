@@ -25,9 +25,13 @@
         </div>
 
           <form @submit.prevent="submit">
-            <button  class="w-full bg-green-600 mt-4 hover:text-white text-white hover:bg-green-400 px-4 py-2  text-base">
+
+            <SecondaryButton type="submit" class="w-full " :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+              <p class="text-center">Place order</p>
+            </SecondaryButton>
+            <!-- <button :disabled="form.processing" class="w-full bg-green-600 mt-4 hover:text-white text-white hover:bg-green-400 px-4 py-2  text-base">
               Place order
-            </button>
+            </button> -->
           </form>
       </div>
 
