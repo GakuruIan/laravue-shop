@@ -63,6 +63,7 @@
 </template>
 
 <script setup>
+import SecondaryButton from '@/Components/SecondaryButton.vue'
 import Checkbox from '@/Components/Checkbox.vue'
 import Navbar from '@/Components/Navbar.vue'
 import { ref } from 'vue'

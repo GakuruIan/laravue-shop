@@ -6,8 +6,10 @@ use Stripe\Event;
 use Stripe\Stripe;
 use Inertia\Inertia;
 use App\Models\Order;
+use App\Mail\OrderEmail;
 use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends Controller
@@ -15,12 +17,12 @@ class PaymentController extends Controller
     //after  successful payment
     public function Success(Request $request){
         $sessionId = $request->get('session_id');
-  
+        
         Stripe::setApiKey(config('stripe.ak'));
         
         try {
           $session = Session::retrieve($sessionId);
-  
+
           $order = Order::where('session_id',$sessionId)->first();
 
           $Customer =  [
@@ -34,6 +36,8 @@ class PaymentController extends Controller
           
           if($order){
               $order->payment_status = 'paid';
+              $order->amount = $session->amount_total/100;
+              $order->shipping_fee = ($session->amount_total - $session->amount_subtotal) / 100;
               $order->save();
           }
 
@@ -75,8 +79,16 @@ class PaymentController extends Controller
                 
                 if($order && $order->payment_status === 'unpaid'){
                     $order->payment_status = 'paid';
+                    $order->amount = $paymentIntent->amount_total/100;
+                    $order->shipping_fee = ($paymentIntent->amount_total - $paymentIntent->amount_subtotal)/100;
+
                     $order->save();
-                     // send email to user
+
+                    // ! fix the 500 status 
+
+                    // Fetch order details after update
+                    $Order=Order::where('session_id',$sessionId)->first();
+                    Mail::to($paymentIntent->customer_details->email)->queue(new OrderEmail($order,$paymentIntent->customer_details->name));
                 }
 
                

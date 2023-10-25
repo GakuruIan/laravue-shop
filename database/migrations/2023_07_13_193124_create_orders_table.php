@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('payment_status')->default('unpaid');
             $table->string('delivery_status')->default('pending');
             $table->decimal('amount', 10, 2);
+            $table->decimal('shipping_fee',10,2)->default(0)->nullable();
             $table->string('tracking_id')->unique();
             $table->string('session_id')->nullable();
             $table->timestamps();
