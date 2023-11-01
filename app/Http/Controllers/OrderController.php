@@ -168,16 +168,33 @@ class OrderController extends Controller
     // fetching a users order
     public function FetchUserOrders(){
 
+      //! this for users with account we show them all their order history
         // if(Auth::check()){
-        //     // add a nullable user_id in orders for tracking
-
         //     return  Inertia::render('Orders/Order');
         // }
 
-        // return redirect('/login');
-
+      // users with no accounts
+     
         return Inertia::render('Orders/Order');
     }
+    
+    public function SearchOrder(Request $request){
+      $validate = $request->validate([
+        'tracking_id'=>'required'
+      ]);
 
+      $trackingId = $request->tracking_id;
+
+      $Orders = OrderItems::whereHas('order', function ($query) use ($trackingId) {
+        $query->where('tracking_id', $trackingId);
+      })->with([
+      'order:id,payment_status,tracking_id,amount,shipping_fee,delivery_status',
+      'product:name,price,id',
+      'product.images'
+      ])->get();
+      
+
+      return response()->json($Orders);
+    }
     
 }

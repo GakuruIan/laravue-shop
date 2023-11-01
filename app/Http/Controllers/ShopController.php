@@ -23,12 +23,12 @@ class ShopController extends Controller
 
 //    Fetch a single product 
     public function FetchProduct(Request $request){
+        
+        $product = products::where('name', $request->name)
+        ->with('images', 'category')
+        ->first();
 
-        $product = products::with(['category' => function ($query) {
-            $query->select('id', 'category_name');
-        }, 'images'])->find($request->id);
-
-        DB::table('products')->where('id',$request->id)->increment('views',1);
+        DB::table('products')->where('id',$product->id)->increment('views',1);
 
         return Inertia::render('Product/Product',['product'=>$product]);
     }

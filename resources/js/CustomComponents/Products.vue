@@ -7,7 +7,7 @@
             <img :src="product.images[0].image" alt="" class="h-56 w-full object-cover">
 
             <div class="flex items-center justify-between mt-2">
-                <a :href="'/product/'+ product.id" class="text-base md:text-base text-gray-800 hover:text-gray-400 hover:cursor-pointer hover:underline">{{ product.name }}</a>
+                <a :href="'/product/'+ product.name" class="text-base md:text-base text-gray-800 hover:text-gray-400 hover:cursor-pointer hover:underline">{{ product.name }}</a>
                 <p class="text-sm">Ksh {{product.price}}</p>
             </div>
 
@@ -38,9 +38,14 @@
 
             <!-- buttons -->
 
-                <button class="flex  items-center justify-center border border-gray-400 hover:bg-[#222] group-hover hover:text-white px-6 py-2 w-full text-base mt-4">
-                      Add to Cart
-                </button>
+                <a :href="`/product/${product.name}`" class="flex  items-center justify-center gap-4 border border-gray-400 hover:bg-[#222] group-hover hover:text-white px-6 py-2 w-full text-base mt-4">
+                     View 
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+
+                </a>
             </div>
     </div>
          <div class="flex justify-end w-full mt-4 py-2">

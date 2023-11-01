@@ -68,19 +68,10 @@
 </div>
 </template>
 
-<script>
+<script setup>
 import Dropdown from '../Components/Dropdown.vue';
 import DropdownLink from '../Components/DropdownLink.vue'
 import Checkbox from '../Components/Checkbox.vue'
-export default {
-   components:{
-    Dropdown,
-    DropdownLink,
-    Checkbox
-}
-}
+
+
 </script>
-
-<style>
-
-</style>

@@ -76,7 +76,7 @@ Route::get('/email/verify/{id}/{hash}',[EmailController::class,'HandleVerificati
 Route::post('/email/verification-notification',[EmailController::class,'ResendVerificationLink'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Fetch a single product
-Route::get('/product/{id}',[ShopController::class,'FetchProduct']);
+Route::get('/product/{name}',[ShopController::class,'FetchProduct']);
 
 // Fetch trending products
 Route::get('/products/trending',[productsController::class,'TrendingProducts']);
@@ -148,6 +148,8 @@ Route::post('/create/order',[OrderController::class,'create']);
 
 // users order
 Route::get('/myorders',[OrderController::class,'FetchUserOrders']);
+
+Route::post('/order/search',[OrderController::class,'SearchOrder']);
 
 // Delieveries
 Route::get('/admin/delieveries',function(){

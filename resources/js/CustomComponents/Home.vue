@@ -21,15 +21,16 @@ import Catergory from './Catergory.vue'
 import Row from '../CustomComponents/Row.vue'
 import Ad from '../CustomComponents/Ad.vue'
 import Policy from './Policy.vue'
+import {baseURL} from '../axios.js'
 
 import { ref,onMounted } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import  { createToaster } from "@meforma/vue-toaster";
 
 const toaster = createToaster({ 
-position:"top-right",
-duration:4000,
- })
+  position:"top-right",
+  duration:4000,
+})
 
 let TrendingContainer = ref(null)
 let TrendingProducts = ref(null)
@@ -38,20 +39,19 @@ let loading = ref(false)
 let loadData =()=>{
   loading.value = true
 
- fetch('/products/trending')
-   .then((response)=>{
-    if(response.ok && response.status === 200){
-      return response.json();
-    }
-   })
-   .then((data)=>{
-     loading.value = false
-     TrendingProducts.value = data;
-   })
-   .catch((err)=>{
-     loading.value = false
-     console.log(err)
-   })
+  
+baseURL.get('/products/trending')
+.then((response)=>{
+  if(response.statusText === 'OK' && response.status === 200){
+    TrendingProducts.value = response.data
+    loading.value= false
+  }
+})
+.catch((error)=>{
+   loading.value= false
+   toaster.error(error.message)
+})
+
 }
 
 onMounted(()=>{

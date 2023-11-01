@@ -34,6 +34,13 @@ import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import { onMounted, ref } from 'vue';
 import { HalfCircleSpinner } from 'epic-spinners'
+import  { createToaster } from "@meforma/vue-toaster";
+import {baseURL} from '../axios.js'
+
+const toaster = createToaster({ 
+  position:"top-right",
+  duration:4000,
+})
 
 let Categories = ref([])
 
@@ -42,21 +49,19 @@ let loading = ref(false)
 
 let loadData =()=>{
   loading.value = true
+  
+  baseURL.get('/category/all')
+  .then((response)=>{
+     if(response.status === 200 && response.statusText === 'OK'){
+       Categories.value = response.data
+       loading.value = false
+     }
+  })
+  .catch((error)=>{
+    loading.value = false
+     toaster.error(error.message)
+  })
 
- fetch('/category/all')
-   .then((response)=>{
-    if(response.ok && response.status === 200){
-      return response.json();
-    }
-   })
-   .then((data)=>{
-     loading.value = false
-     Categories.value = data;
-   })
-   .catch((err)=>{
-     loading.value = false
-     console.log(err)
-   })
 }
 
 onMounted(()=>{

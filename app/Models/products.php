@@ -31,4 +31,8 @@ class products extends Model
     public function images() :HasMany{
         return $this->hasMany(productImages::class,'product_id');
     }
+
+    public function orderitems():HasMany{
+        return $this->hasMany(OrderItems::class,'product_id');
+    }
 }
